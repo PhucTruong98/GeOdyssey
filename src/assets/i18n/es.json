@@ -34,5 +34,9 @@
     "POPULATION": "Población",
     "REGION": "Región",
     "BACK": "Volver al mapa"
+  },
+  
+    "HEADER": {
+    "LOGOUT": "Logout"
   }
 }

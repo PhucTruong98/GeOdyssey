@@ -34,4 +34,9 @@
     "REGION": "Region",
     "BACK": "Back to map"
   }
+,
+    "HEADER": {
+    "LOGOUT": "Logout"
+  }
+  
 }

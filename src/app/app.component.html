@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
   <div class="hamburger" (click)="toggleMenu()">☰</div>
   <nav [class.open]="menuOpen">
     <span *ngIf="profileName$ | async as profile">Welcome, {{ profile.name }}</span>
@@ -8,7 +8,8 @@
   <option value="en">English</option>
   <option value="es">Español</option>
 </select>
-</header>
+</header> -->
+<app-header></app-header>
 <router-outlet></router-outlet>
 
 <router-outlet />

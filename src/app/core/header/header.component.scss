@@ -1,0 +1,35 @@
+.app-header {
+  .toolbar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      img {
+        height: 40px;
+        margin-right: 0.5rem;
+      }
+
+      .app-name {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: rgb(2, 120, 255);
+      }
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    mat-select {
+      color: white;
+      .mat-select-trigger {
+        font-size: 0.875rem;
+      }
+    }
+  }
+}

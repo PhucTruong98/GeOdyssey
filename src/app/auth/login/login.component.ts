@@ -1,7 +1,7 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -11,14 +11,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './login.component.scss'
 
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   email = '';
   password = '';
   form: FormGroup;
   errorMessage = '';
+  returnUrl = "";
 
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private auth: AuthService, 
     private router: Router) {
@@ -30,11 +32,16 @@ export class LoginComponent {
     });
     }
 
+ngOnInit() {
+  this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/map';
+}
+
+
   login() {
     if (this.form.invalid) return;
     const { email, password } = this.form.value;
     this.auth.login(email, password).subscribe({
-      next: () => this.router.navigate(['/map']),
+      next: () =>  this.router.navigateByUrl(this.returnUrl),
       error: err => this.errorMessage = err.message
     });
   }

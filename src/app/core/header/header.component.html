@@ -1,0 +1,32 @@
+<mat-toolbar color="primary" class="app-header">
+  <div class="toolbar-content">
+    <span class="logo" routerLink="/">
+      <img src="assets/logo.png" alt="Geodyssey Logo" />
+      <span class="app-name">GeOdyssey</span>
+    </span>
+
+    <span class="spacer"></span>
+
+    <button mat-button (click)="navigateTo('map')" fontIcon="terrain">
+      <mat-icon>public</mat-icon>
+      {{ 'MAP.TITLE' | translate }}
+    </button>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item (click)="navigateTo('profile')">
+        <mat-icon>person</mat-icon> {{ currentUser?.displayName || currentUser?.email }}
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon> {{ 'HEADER.LOGOUT' | translate }}
+      </button>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <mat-select [value]="currentLang" (selectionChange)="switchLang($event.value)">
+      <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.name.toUpperCase() }}</mat-option>
+    </mat-select>
+  </div>
+</mat-toolbar>

@@ -13,6 +13,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CountryDetailComponent } from './map/country-detail/country-detail.component';
 import { MapModule } from './map/map.module';
+import { CoreModule } from "./core/core.module";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -25,19 +26,19 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
   ],
   imports: [
-    
     TranslateModule.forRoot({
-      defaultLanguage: 'en',
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+        defaultLanguage: 'en',
+        loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+        }
     }),
     BrowserModule,
     AppRoutingModule,
-    MapModule
-  ],
+    MapModule,
+    CoreModule
+],
   providers: [
     provideHttpClient(), // ✅ Use this modern provider
     provideClientHydration(withEventReplay()),
