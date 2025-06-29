@@ -1,0 +1,14 @@
+<div class="detail-overlay" *ngIf="countryData">
+  <div class="detail-panel">
+    <button class="close-btn" (click)="close()">✖</button>
+
+    <img [src]="countryData.flags.svg" alt="{{ countryData.name.common }} flag" />
+
+    <h2>{{ countryData.name.common }}</h2>
+
+    <p><strong>{{ 'MAP.CAPITAL' | translate }}:</strong> {{ countryData.capital[0] }}</p>
+    <p><strong>{{ 'MAP.POPULATION' | translate }}:</strong> {{ countryData.population | number }}</p>
+    <p><strong>{{ 'MAP.REGION' | translate }}:</strong> {{ countryData.region }}</p>
+  </div>
+</div>
+

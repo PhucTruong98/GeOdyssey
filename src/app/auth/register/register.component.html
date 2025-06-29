@@ -1,0 +1,54 @@
+<mat-card class="auth-card">
+  <h2>{{ 'REGISTER.TITLE' | translate }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="register()" fxLayout="column" fxLayoutGap="16px">
+    <!-- Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'REGISTER.NAME' | translate }}</mat-label>
+      <input matInput formControlName="name" type="text" />
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        {{ 'REGISTER.ERROR.REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('name')?.hasError('minlength')">
+        {{ 'REGISTER.ERROR.NAME_TOO_SHORT' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'REGISTER.EMAIL' | translate }}</mat-label>
+      <input matInput formControlName="email" type="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        {{ 'REGISTER.ERROR.REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        {{ 'REGISTER.ERROR.EMAIL' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'REGISTER.PASSWORD' | translate }}</mat-label>
+      <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="form.get('password')?.hasError('required')">
+        {{ 'REGISTER.ERROR.REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+        {{ 'REGISTER.ERROR.MIN_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Submit -->
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ 'REGISTER.SUBMIT' | translate }}
+    </button>
+
+    <!-- Global error -->
+    <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+  </form>
+
+  <p>
+    {{ 'REGISTER.ALREADY_HAVE_ACCOUNT' | translate }}
+    <a routerLink="/auth/login">{{ 'REGISTER.LOGIN_HERE' | translate }}</a>
+  </p>
+</mat-card>

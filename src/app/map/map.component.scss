@@ -1,0 +1,24 @@
+.map-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  padding: 1rem;
+  overflow: hidden;
+
+  .svg-object {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+
+
+}
+
+  @media (max-width: 600px) {
+  .map-container {
+    padding: 0.5rem;
+  }
+}

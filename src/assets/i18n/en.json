@@ -1,0 +1,37 @@
+{
+  "LOGIN": {
+    "TITLE": "Login",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "SUBMIT": "Login",
+    "NO_ACCOUNT": "Don't have an account?",
+    "REGISTER": "Register here",
+     "ERROR": {
+      "REQUIRED": "This field is required",
+      "EMAIL": "Please enter a valid email",
+      "MIN_LENGTH": "Minimum 6 characters"
+    }
+  },
+  "REGISTER": {
+    "TITLE": "Create Account",
+    "NAME": "Name",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "SUBMIT": "Register",
+    "ALREADY_HAVE_ACCOUNT": "Already have an account?",
+    "LOGIN_HERE": "Login here",
+    "ERROR": {
+      "REQUIRED": "This field is required",
+      "EMAIL": "Please enter a valid email",
+      "MIN_LENGTH": "Minimum 6 characters",
+      "NAME_TOO_SHORT": "Name must be at least 2 characters"
+    }
+  },
+    "MAP": {
+    "TITLE": "Explore the World",
+    "CAPITAL": "Capital",
+    "POPULATION": "Population",
+    "REGION": "Region",
+    "BACK": "Back to map"
+  }
+}

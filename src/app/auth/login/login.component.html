@@ -1,0 +1,40 @@
+<mat-card class="auth-card">
+    <h2>{{ 'LOGIN.TITLE' | translate }}</h2>
+    <form [formGroup]="form" (ngSubmit)="login()" fxLayout="column" fxLayoutGap="16px">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'LOGIN.EMAIL' | translate }}</mat-label>
+            <input matInput formControlName="email" type="email" />
+            <mat-error *ngIf="form.get('email')?.hasError('required')">
+                {{ 'LOGIN.ERROR.REQUIRED' | translate }}
+            </mat-error>
+
+            <mat-error *ngIf="form.get('email')?.hasError('email')">
+                {{ 'LOGIN.ERROR.EMAIL' | translate }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ 'LOGIN.PASSWORD' | translate }}</mat-label>
+            <input matInput formControlName="password" type="password" />
+
+            <mat-error *ngIf="form.get('password')?.hasError('required')">
+                {{ 'LOGIN.ERROR.REQUIRED' | translate }}
+            </mat-error>
+
+            <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+                {{ 'LOGIN.ERROR.MIN_LENGTH' | translate }}
+            </mat-error>
+
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ 'LOGIN.SUBMIT' | translate }}
+        </button>
+
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+    </form>
+    <p>
+        {{ 'LOGIN.NO_ACCOUNT' | translate }}
+        <a routerLink="/auth/register">{{ 'LOGIN.REGISTER' | translate }}</a>
+    </p>
+</mat-card>

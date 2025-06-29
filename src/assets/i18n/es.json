@@ -1,0 +1,38 @@
+{
+  "LOGIN": {
+    "TITLE": "Iniciar sesión",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "SUBMIT": "Entrar",
+    "NO_ACCOUNT": "¿No tienes una cuenta?",
+    "REGISTER": "Regístrate aquí",
+    "ERROR": {
+      "REQUIRED": "Este campo es obligatorio",
+      "EMAIL": "Por favor, introduce un correo válido",
+      "MIN_LENGTH": "Mínimo 6 caracteres"
+    }
+  },
+  
+  "REGISTER": {
+    "TITLE": "Crear Cuenta",
+    "NAME": "Nombre",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "SUBMIT": "Registrarse",
+    "ALREADY_HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
+    "LOGIN_HERE": "Inicia sesión aquí",
+    "ERROR": {
+      "REQUIRED": "Este campo es obligatorio",
+      "EMAIL": "Por favor, introduce un correo válido",
+      "MIN_LENGTH": "Mínimo 6 caracteres",
+      "NAME_TOO_SHORT": "El nombre debe tener al menos 2 caracteres"
+    }
+  },
+  "MAP": {
+    "TITLE": "Explora el Mundo",
+    "CAPITAL": "Capital",
+    "POPULATION": "Población",
+    "REGION": "Región",
+    "BACK": "Volver al mapa"
+  }
+}
