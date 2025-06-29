@@ -37,6 +37,14 @@
 ,
     "HEADER": {
     "LOGOUT": "Logout"
-  }
+  },
+  "PROFILE": {
+  "TITLE": "User Profile",
+  "NAME": "Display Name",
+  "EMAIL": "Email",
+  "SAVE": "Save",
+  "SAVED": "Data Updated"
+
+}
   
 }

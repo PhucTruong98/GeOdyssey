@@ -1,19 +1,21 @@
 <mat-toolbar color="primary" class="app-header">
-  <div class="toolbar-content">
+  <div class="toolbar-left">
     <span class="logo" routerLink="/">
       <img src="assets/logo.png" alt="Geodyssey Logo" />
       <span class="app-name">GeOdyssey</span>
     </span>
 
-    <span class="spacer"></span>
+    <span class="toolbar-spacer"></span>
 
-    <button mat-button (click)="navigateTo('map')" fontIcon="terrain">
+  </div>
+  <div class="toolbar-right">
+ <button mat-button (click)="navigateTo('map')" fontIcon="terrain">
       <mat-icon>public</mat-icon>
       {{ 'MAP.TITLE' | translate }}
     </button>
 
     <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item (click)="navigateTo('profile')">
+      <button mat-menu-item (click)="navigateTo('profile/profile')">
         <mat-icon>person</mat-icon> {{ currentUser?.displayName || currentUser?.email }}
       </button>
       <button mat-menu-item (click)="logout()">
@@ -26,7 +28,14 @@
     </button>
 
     <mat-select [value]="currentLang" (selectionChange)="switchLang($event.value)">
-      <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.name.toUpperCase() }}</mat-option>
+      <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.name.toUpperCase() }}
+    {{ lang.value === 'en' ? '🇺🇸' : '🇪🇸' }}
+
+
+      </mat-option>
     </mat-select>
+
+
   </div>
+   
 </mat-toolbar>

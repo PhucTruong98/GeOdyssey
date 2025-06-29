@@ -1,8 +1,11 @@
 .app-header {
-  .toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .toolbar-left {
     display: flex;
     align-items: center;
-    width: 100%;
 
     .logo {
       display: flex;
@@ -17,19 +20,40 @@
       .app-name {
         font-size: 1.25rem;
         font-weight: bold;
-        color: rgb(2, 120, 255);
+        color: var(--primary-button-color)
       }
     }
+  }
 
-    .spacer {
-      flex: 1 1 auto;
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .lang-select {
+      color:var(--primary-button-color);
+      min-width: unset;
+      max-width: 80px;
+
+  ::ng-deep .mat-select-trigger {
+    padding: 0 8px;
+    display: flex;
+    justify-content: center;
+  }
+
+  ::ng-deep .mat-select-value {
+    color: var(--primary-button-color);
+    font-weight: bold;
+    text-align: center;
+  }
     }
 
-    mat-select {
-      color: white;
-      .mat-select-trigger {
-        font-size: 0.875rem;
-      }
+    button[mat-icon-button] {
+      color: var(--primary-button-color);
     }
   }
 }

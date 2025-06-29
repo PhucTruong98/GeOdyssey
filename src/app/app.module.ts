@@ -14,6 +14,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CountryDetailComponent } from './map/country-detail/country-detail.component';
 import { MapModule } from './map/map.module';
 import { CoreModule } from "./core/core.module";
+import { ProfileModule } from './profile/profile.module';
+import { MaterialModule } from './shared/material/material.module';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,7 +39,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     MapModule,
-    CoreModule
+    CoreModule,
+    ProfileModule,
+    MaterialModule
 ],
   providers: [
     provideHttpClient(), // ✅ Use this modern provider

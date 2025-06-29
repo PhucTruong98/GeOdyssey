@@ -25,6 +25,12 @@ export class AuthService {
     return docData(userRef);
   }
 
+  updateUser(uid: string, data: Partial<{ name: string }>) {
+  const userRef = doc(this.afs, `users/${uid}`);
+  return setDoc(userRef, data, { merge: true });
+}
+
+
   logout() {
     return from(signOut(this.auth));
   }
