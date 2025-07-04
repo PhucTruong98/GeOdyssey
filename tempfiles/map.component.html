@@ -1,0 +1,26 @@
+<!-- <h2>{{ 'MAP.TITLE' | translate }}</h2>
+<div class="map-container">
+  <object
+    id="svgMap"
+    type="image/svg+xml"
+    data="assets/world-map.svg"
+    aria-label="World map"
+    class="svg-object">
+  </object>
+</div>
+
+<app-country-detail
+  *ngIf="currentCountryCode"
+  [countryCode]="currentCountryCode"
+  (close)="closeDetail()">
+</app-country-detail> -->
+
+<div class="map-container">
+<div class="map-wrapper">
+  <button *ngIf="currentCountryCode" mat-button (click)="backToWorld()">⬅ Back to World</button>
+  <object #svgContainer type="image/svg+xml" height="100%" class="svg-object" id="svgContainer"></object>
+
+</div>
+</div>
+
+

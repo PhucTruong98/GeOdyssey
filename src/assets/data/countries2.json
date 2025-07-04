@@ -1,0 +1,1930 @@
+[
+  {
+    "code": "AW",
+    "name": "Aruba",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 115120,
+    "capital": ""
+  },
+  {
+    "code": "AF",
+    "name": "Afghanistan",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 34124811,
+    "capital": ""
+  },
+  {
+    "code": "AO",
+    "name": "Angola",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 29310273,
+    "capital": ""
+  },
+  {
+    "code": "AI",
+    "name": "Anguilla",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 17087,
+    "capital": ""
+  },
+  {
+    "code": "AL",
+    "name": "Albania",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 3047987,
+    "capital": ""
+  },
+  {
+    "code": "AX",
+    "name": "Åland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 27153,
+    "capital": ""
+  },
+  {
+    "code": "AD",
+    "name": "Andorra",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 85702,
+    "capital": ""
+  },
+  {
+    "code": "AE",
+    "name": "United Arab Emirates",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 6072475,
+    "capital": ""
+  },
+  {
+    "code": "AR",
+    "name": "Argentina",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 44293293,
+    "capital": ""
+  },
+  {
+    "code": "AM",
+    "name": "Armenia",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 3045191,
+    "capital": ""
+  },
+  {
+    "code": "AS",
+    "name": "American Samoa",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 51504,
+    "capital": ""
+  },
+  {
+    "code": "AQ",
+    "name": "Antarctica",
+    "continent": "Antarctica",
+    "economy": "6. Developing region",
+    "population": 4050,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "Ashmore and Cartier Is.",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 0,
+    "capital": ""
+  },
+  {
+    "code": "TF",
+    "name": "Fr. S. Antarctic Lands",
+    "continent": "Seven seas (open ocean)",
+    "economy": "6. Developing region",
+    "population": 140,
+    "capital": ""
+  },
+  {
+    "code": "AG",
+    "name": "Antigua and Barb.",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 94731,
+    "capital": ""
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "continent": "Oceania",
+    "economy": "2. Developed region: nonG7",
+    "population": 23232413,
+    "capital": ""
+  },
+  {
+    "code": "AT",
+    "name": "Austria",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 8754413,
+    "capital": ""
+  },
+  {
+    "code": "AZ",
+    "name": "Azerbaijan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 9961396,
+    "capital": ""
+  },
+  {
+    "code": "BI",
+    "name": "Burundi",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 11466756,
+    "capital": ""
+  },
+  {
+    "code": "BE",
+    "name": "Belgium",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 11491346,
+    "capital": ""
+  },
+  {
+    "code": "BJ",
+    "name": "Benin",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 11038805,
+    "capital": ""
+  },
+  {
+    "code": "BF",
+    "name": "Burkina Faso",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 20107509,
+    "capital": ""
+  },
+  {
+    "code": "BD",
+    "name": "Bangladesh",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 157826578,
+    "capital": ""
+  },
+  {
+    "code": "BG",
+    "name": "Bulgaria",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 7101510,
+    "capital": ""
+  },
+  {
+    "code": "BH",
+    "name": "Bahrain",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 1410942,
+    "capital": ""
+  },
+  {
+    "code": "BS",
+    "name": "Bahamas",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 329988,
+    "capital": ""
+  },
+  {
+    "code": "BA",
+    "name": "Bosnia and Herz.",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 3856181,
+    "capital": ""
+  },
+  {
+    "code": "BL",
+    "name": "St-Barthélemy",
+    "continent": "North America",
+    "economy": "2. Developed region: nonG7",
+    "population": 7184,
+    "capital": ""
+  },
+  {
+    "code": "BY",
+    "name": "Belarus",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 9549747,
+    "capital": ""
+  },
+  {
+    "code": "BZ",
+    "name": "Belize",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 360346,
+    "capital": ""
+  },
+  {
+    "code": "BM",
+    "name": "Bermuda",
+    "continent": "North America",
+    "economy": "2. Developed region: nonG7",
+    "population": 70864,
+    "capital": ""
+  },
+  {
+    "code": "BO",
+    "name": "Bolivia",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 11138234,
+    "capital": ""
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "continent": "South America",
+    "economy": "3. Emerging region: BRIC",
+    "population": 207353391,
+    "capital": ""
+  },
+  {
+    "code": "BB",
+    "name": "Barbados",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 292336,
+    "capital": ""
+  },
+  {
+    "code": "BN",
+    "name": "Brunei",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 443593,
+    "capital": ""
+  },
+  {
+    "code": "BT",
+    "name": "Bhutan",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 758288,
+    "capital": ""
+  },
+  {
+    "code": "BW",
+    "name": "Botswana",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 2214858,
+    "capital": ""
+  },
+  {
+    "code": "CF",
+    "name": "Central African Rep.",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 5625118,
+    "capital": ""
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "continent": "North America",
+    "economy": "1. Developed region: G7",
+    "population": 35623680,
+    "capital": ""
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 8236303,
+    "capital": ""
+  },
+  {
+    "code": "CL",
+    "name": "Chile",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 17789267,
+    "capital": ""
+  },
+  {
+    "code": "CN",
+    "name": "China",
+    "continent": "Asia",
+    "economy": "3. Emerging region: BRIC",
+    "population": 1379302771,
+    "capital": ""
+  },
+  {
+    "code": "CI",
+    "name": "Côte d'Ivoire",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 24184810,
+    "capital": ""
+  },
+  {
+    "code": "CM",
+    "name": "Cameroon",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 24994885,
+    "capital": ""
+  },
+  {
+    "code": "CD",
+    "name": "Dem. Rep. Congo",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 83301151,
+    "capital": ""
+  },
+  {
+    "code": "CG",
+    "name": "Congo",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 4954674,
+    "capital": ""
+  },
+  {
+    "code": "CK",
+    "name": "Cook Is.",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 9290,
+    "capital": ""
+  },
+  {
+    "code": "CO",
+    "name": "Colombia",
+    "continent": "South America",
+    "economy": "6. Developing region",
+    "population": 47698524,
+    "capital": ""
+  },
+  {
+    "code": "KM",
+    "name": "Comoros",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 808080,
+    "capital": ""
+  },
+  {
+    "code": "CV",
+    "name": "Cabo Verde",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 560899,
+    "capital": ""
+  },
+  {
+    "code": "CR",
+    "name": "Costa Rica",
+    "continent": "North America",
+    "economy": "5. Emerging region: G20",
+    "population": 4930258,
+    "capital": ""
+  },
+  {
+    "code": "CU",
+    "name": "Cuba",
+    "continent": "North America",
+    "economy": "5. Emerging region: G20",
+    "population": 11147407,
+    "capital": ""
+  },
+  {
+    "code": "CW",
+    "name": "Curaçao",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 149648,
+    "capital": ""
+  },
+  {
+    "code": "KY",
+    "name": "Cayman Is.",
+    "continent": "North America",
+    "economy": "5. Emerging region: G20",
+    "population": 58441,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "N. Cyprus",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 265100,
+    "capital": ""
+  },
+  {
+    "code": "CY",
+    "name": "Cyprus",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 1221549,
+    "capital": ""
+  },
+  {
+    "code": "CZ",
+    "name": "Czechia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 10674723,
+    "capital": ""
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "continent": "Europe",
+    "economy": "1. Developed region: G7",
+    "population": 80594017,
+    "capital": ""
+  },
+  {
+    "code": "DJ",
+    "name": "Djibouti",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 865267,
+    "capital": ""
+  },
+  {
+    "code": "DM",
+    "name": "Dominica",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 73897,
+    "capital": ""
+  },
+  {
+    "code": "DK",
+    "name": "Denmark",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 5605948,
+    "capital": ""
+  },
+  {
+    "code": "DO",
+    "name": "Dominican Rep.",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 10734247,
+    "capital": ""
+  },
+  {
+    "code": "DZ",
+    "name": "Algeria",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 40969443,
+    "capital": ""
+  },
+  {
+    "code": "EC",
+    "name": "Ecuador",
+    "continent": "South America",
+    "economy": "6. Developing region",
+    "population": 16290913,
+    "capital": ""
+  },
+  {
+    "code": "EG",
+    "name": "Egypt",
+    "continent": "Africa",
+    "economy": "5. Emerging region: G20",
+    "population": 97041072,
+    "capital": ""
+  },
+  {
+    "code": "ER",
+    "name": "Eritrea",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 5918919,
+    "capital": ""
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 48958159,
+    "capital": ""
+  },
+  {
+    "code": "EE",
+    "name": "Estonia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 1251581,
+    "capital": ""
+  },
+  {
+    "code": "ET",
+    "name": "Ethiopia",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 105350020,
+    "capital": ""
+  },
+  {
+    "code": "FI",
+    "name": "Finland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 5491218,
+    "capital": ""
+  },
+  {
+    "code": "FJ",
+    "name": "Fiji",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 920938,
+    "capital": ""
+  },
+  {
+    "code": "FK",
+    "name": "Falkland Is.",
+    "continent": "South America",
+    "economy": "2. Developed region: nonG7",
+    "population": 2931,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "France",
+    "continent": "Europe",
+    "economy": "1. Developed region: G7",
+    "population": 67106161,
+    "capital": ""
+  },
+  {
+    "code": "FO",
+    "name": "Faeroe Is.",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 50730,
+    "capital": ""
+  },
+  {
+    "code": "FM",
+    "name": "Micronesia",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 104196,
+    "capital": ""
+  },
+  {
+    "code": "GA",
+    "name": "Gabon",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 1772255,
+    "capital": ""
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "continent": "Europe",
+    "economy": "1. Developed region: G7",
+    "population": 64769452,
+    "capital": ""
+  },
+  {
+    "code": "GE",
+    "name": "Georgia",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 4926330,
+    "capital": ""
+  },
+  {
+    "code": "GG",
+    "name": "Guernsey",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 66502,
+    "capital": ""
+  },
+  {
+    "code": "GH",
+    "name": "Ghana",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 27499924,
+    "capital": ""
+  },
+  {
+    "code": "GN",
+    "name": "Guinea",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 12413867,
+    "capital": ""
+  },
+  {
+    "code": "GM",
+    "name": "Gambia",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 2051363,
+    "capital": ""
+  },
+  {
+    "code": "GW",
+    "name": "Guinea-Bissau",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 1792338,
+    "capital": ""
+  },
+  {
+    "code": "GQ",
+    "name": "Eq. Guinea",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 778358,
+    "capital": ""
+  },
+  {
+    "code": "GR",
+    "name": "Greece",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 10768477,
+    "capital": ""
+  },
+  {
+    "code": "GD",
+    "name": "Grenada",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 111724,
+    "capital": ""
+  },
+  {
+    "code": "GL",
+    "name": "Greenland",
+    "continent": "North America",
+    "economy": "2. Developed region: nonG7",
+    "population": 57713,
+    "capital": ""
+  },
+  {
+    "code": "GT",
+    "name": "Guatemala",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 15460732,
+    "capital": ""
+  },
+  {
+    "code": "GU",
+    "name": "Guam",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 167358,
+    "capital": ""
+  },
+  {
+    "code": "GY",
+    "name": "Guyana",
+    "continent": "South America",
+    "economy": "6. Developing region",
+    "population": 737718,
+    "capital": ""
+  },
+  {
+    "code": "HK",
+    "name": "Hong Kong",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 7191503,
+    "capital": ""
+  },
+  {
+    "code": "HM",
+    "name": "Heard I. and McDonald Is.",
+    "continent": "Seven seas (open ocean)",
+    "economy": "7. Least developed region",
+    "population": 0,
+    "capital": ""
+  },
+  {
+    "code": "HN",
+    "name": "Honduras",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 9038741,
+    "capital": ""
+  },
+  {
+    "code": "HR",
+    "name": "Croatia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 4292095,
+    "capital": ""
+  },
+  {
+    "code": "HT",
+    "name": "Haiti",
+    "continent": "North America",
+    "economy": "7. Least developed region",
+    "population": 10646714,
+    "capital": ""
+  },
+  {
+    "code": "HU",
+    "name": "Hungary",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 9850845,
+    "capital": ""
+  },
+  {
+    "code": "ID",
+    "name": "Indonesia",
+    "continent": "Asia",
+    "economy": "4. Emerging region: MIKT",
+    "population": 260580739,
+    "capital": ""
+  },
+  {
+    "code": "IM",
+    "name": "Isle of Man",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 88815,
+    "capital": ""
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "continent": "Asia",
+    "economy": "3. Emerging region: BRIC",
+    "population": 1281935911,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "Indian Ocean Ter.",
+    "continent": "Asia",
+    "economy": "2. Developed region: nonG7",
+    "population": 2801,
+    "capital": ""
+  },
+  {
+    "code": "IO",
+    "name": "Br. Indian Ocean Ter.",
+    "continent": "Seven seas (open ocean)",
+    "economy": "2. Developed region: nonG7",
+    "population": 4000,
+    "capital": ""
+  },
+  {
+    "code": "IE",
+    "name": "Ireland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 5011102,
+    "capital": ""
+  },
+  {
+    "code": "IR",
+    "name": "Iran",
+    "continent": "Asia",
+    "economy": "5. Emerging region: G20",
+    "population": 82021564,
+    "capital": ""
+  },
+  {
+    "code": "IQ",
+    "name": "Iraq",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 39192111,
+    "capital": ""
+  },
+  {
+    "code": "IS",
+    "name": "Iceland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 339747,
+    "capital": ""
+  },
+  {
+    "code": "IL",
+    "name": "Israel",
+    "continent": "Asia",
+    "economy": "2. Developed region: nonG7",
+    "population": 8299706,
+    "capital": ""
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "continent": "Europe",
+    "economy": "1. Developed region: G7",
+    "population": 62137802,
+    "capital": ""
+  },
+  {
+    "code": "JM",
+    "name": "Jamaica",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 2990561,
+    "capital": ""
+  },
+  {
+    "code": "JE",
+    "name": "Jersey",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 98840,
+    "capital": ""
+  },
+  {
+    "code": "JO",
+    "name": "Jordan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 10248069,
+    "capital": ""
+  },
+  {
+    "code": "JP",
+    "name": "Japan",
+    "continent": "Asia",
+    "economy": "1. Developed region: G7",
+    "population": 126451398,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "Siachen Glacier",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 6000,
+    "capital": ""
+  },
+  {
+    "code": "KZ",
+    "name": "Kazakhstan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 18556698,
+    "capital": ""
+  },
+  {
+    "code": "KE",
+    "name": "Kenya",
+    "continent": "Africa",
+    "economy": "5. Emerging region: G20",
+    "population": 47615739,
+    "capital": ""
+  },
+  {
+    "code": "KG",
+    "name": "Kyrgyzstan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 5789122,
+    "capital": ""
+  },
+  {
+    "code": "KH",
+    "name": "Cambodia",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 16204486,
+    "capital": ""
+  },
+  {
+    "code": "KI",
+    "name": "Kiribati",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 108145,
+    "capital": ""
+  },
+  {
+    "code": "KN",
+    "name": "St. Kitts and Nevis",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 52715,
+    "capital": ""
+  },
+  {
+    "code": "KR",
+    "name": "South Korea",
+    "continent": "Asia",
+    "economy": "4. Emerging region: MIKT",
+    "population": 51181299,
+    "capital": ""
+  },
+  {
+    "code": "XK",
+    "name": "Kosovo",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 1895250,
+    "capital": ""
+  },
+  {
+    "code": "KW",
+    "name": "Kuwait",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 2875422,
+    "capital": ""
+  },
+  {
+    "code": "LA",
+    "name": "Laos",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 7126706,
+    "capital": ""
+  },
+  {
+    "code": "LB",
+    "name": "Lebanon",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 6229794,
+    "capital": ""
+  },
+  {
+    "code": "LR",
+    "name": "Liberia",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 4689021,
+    "capital": ""
+  },
+  {
+    "code": "LY",
+    "name": "Libya",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 6653210,
+    "capital": ""
+  },
+  {
+    "code": "LC",
+    "name": "Saint Lucia",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 164994,
+    "capital": ""
+  },
+  {
+    "code": "LI",
+    "name": "Liechtenstein",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 38244,
+    "capital": ""
+  },
+  {
+    "code": "LK",
+    "name": "Sri Lanka",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 22409381,
+    "capital": ""
+  },
+  {
+    "code": "LS",
+    "name": "Lesotho",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 1958042,
+    "capital": ""
+  },
+  {
+    "code": "LT",
+    "name": "Lithuania",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 2823859,
+    "capital": ""
+  },
+  {
+    "code": "LU",
+    "name": "Luxembourg",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 594130,
+    "capital": ""
+  },
+  {
+    "code": "LV",
+    "name": "Latvia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 1944643,
+    "capital": ""
+  },
+  {
+    "code": "MO",
+    "name": "Macao",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 601969,
+    "capital": ""
+  },
+  {
+    "code": "MF",
+    "name": "St-Martin",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 32125,
+    "capital": ""
+  },
+  {
+    "code": "MA",
+    "name": "Morocco",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 33986655,
+    "capital": ""
+  },
+  {
+    "code": "MC",
+    "name": "Monaco",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 30645,
+    "capital": ""
+  },
+  {
+    "code": "MD",
+    "name": "Moldova",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 3474121,
+    "capital": ""
+  },
+  {
+    "code": "MG",
+    "name": "Madagascar",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 25054161,
+    "capital": ""
+  },
+  {
+    "code": "MV",
+    "name": "Maldives",
+    "continent": "Seven seas (open ocean)",
+    "economy": "6. Developing region",
+    "population": 392709,
+    "capital": ""
+  },
+  {
+    "code": "MX",
+    "name": "Mexico",
+    "continent": "North America",
+    "economy": "4. Emerging region: MIKT",
+    "population": 124574795,
+    "capital": ""
+  },
+  {
+    "code": "MH",
+    "name": "Marshall Is.",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 74539,
+    "capital": ""
+  },
+  {
+    "code": "MK",
+    "name": "Macedonia",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 2103721,
+    "capital": ""
+  },
+  {
+    "code": "ML",
+    "name": "Mali",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 17885245,
+    "capital": ""
+  },
+  {
+    "code": "MT",
+    "name": "Malta",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 416338,
+    "capital": ""
+  },
+  {
+    "code": "MM",
+    "name": "Myanmar",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 55123814,
+    "capital": ""
+  },
+  {
+    "code": "ME",
+    "name": "Montenegro",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 642550,
+    "capital": ""
+  },
+  {
+    "code": "MN",
+    "name": "Mongolia",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 3068243,
+    "capital": ""
+  },
+  {
+    "code": "MP",
+    "name": "N. Mariana Is.",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 52263,
+    "capital": ""
+  },
+  {
+    "code": "MZ",
+    "name": "Mozambique",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 26573706,
+    "capital": ""
+  },
+  {
+    "code": "MR",
+    "name": "Mauritania",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 3758571,
+    "capital": ""
+  },
+  {
+    "code": "MS",
+    "name": "Montserrat",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 5292,
+    "capital": ""
+  },
+  {
+    "code": "MU",
+    "name": "Mauritius",
+    "continent": "Seven seas (open ocean)",
+    "economy": "6. Developing region",
+    "population": 1356388,
+    "capital": ""
+  },
+  {
+    "code": "MW",
+    "name": "Malawi",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 19196246,
+    "capital": ""
+  },
+  {
+    "code": "MY",
+    "name": "Malaysia",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 31381992,
+    "capital": ""
+  },
+  {
+    "code": "NA",
+    "name": "Namibia",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 2484780,
+    "capital": ""
+  },
+  {
+    "code": "NC",
+    "name": "New Caledonia",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 279070,
+    "capital": ""
+  },
+  {
+    "code": "NE",
+    "name": "Niger",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 19245344,
+    "capital": ""
+  },
+  {
+    "code": "NF",
+    "name": "Norfolk Island",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 2210,
+    "capital": ""
+  },
+  {
+    "code": "NG",
+    "name": "Nigeria",
+    "continent": "Africa",
+    "economy": "5. Emerging region: G20",
+    "population": 190632261,
+    "capital": ""
+  },
+  {
+    "code": "NI",
+    "name": "Nicaragua",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 6025951,
+    "capital": ""
+  },
+  {
+    "code": "NU",
+    "name": "Niue",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 1626,
+    "capital": ""
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 17084719,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "Norway",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 5320045,
+    "capital": ""
+  },
+  {
+    "code": "NP",
+    "name": "Nepal",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 29384297,
+    "capital": ""
+  },
+  {
+    "code": "NR",
+    "name": "Nauru",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 9642,
+    "capital": ""
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand",
+    "continent": "Oceania",
+    "economy": "2. Developed region: nonG7",
+    "population": 4510327,
+    "capital": ""
+  },
+  {
+    "code": "OM",
+    "name": "Oman",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 3424386,
+    "capital": ""
+  },
+  {
+    "code": "PK",
+    "name": "Pakistan",
+    "continent": "Asia",
+    "economy": "5. Emerging region: G20",
+    "population": 204924861,
+    "capital": ""
+  },
+  {
+    "code": "PA",
+    "name": "Panama",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 3753142,
+    "capital": ""
+  },
+  {
+    "code": "PN",
+    "name": "Pitcairn Is.",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 54,
+    "capital": ""
+  },
+  {
+    "code": "PE",
+    "name": "Peru",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 31036656,
+    "capital": ""
+  },
+  {
+    "code": "PH",
+    "name": "Philippines",
+    "continent": "Asia",
+    "economy": "5. Emerging region: G20",
+    "population": 104256076,
+    "capital": ""
+  },
+  {
+    "code": "PW",
+    "name": "Palau",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 21431,
+    "capital": ""
+  },
+  {
+    "code": "PG",
+    "name": "Papua New Guinea",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 6909701,
+    "capital": ""
+  },
+  {
+    "code": "PL",
+    "name": "Poland",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 38476269,
+    "capital": ""
+  },
+  {
+    "code": "PR",
+    "name": "Puerto Rico",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 3351827,
+    "capital": ""
+  },
+  {
+    "code": "KP",
+    "name": "North Korea",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 25248140,
+    "capital": ""
+  },
+  {
+    "code": "PT",
+    "name": "Portugal",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 10839514,
+    "capital": ""
+  },
+  {
+    "code": "PY",
+    "name": "Paraguay",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 6943739,
+    "capital": ""
+  },
+  {
+    "code": "PS",
+    "name": "Palestine",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 4543126,
+    "capital": ""
+  },
+  {
+    "code": "PF",
+    "name": "Fr. Polynesia",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 287881,
+    "capital": ""
+  },
+  {
+    "code": "QA",
+    "name": "Qatar",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 2314307,
+    "capital": ""
+  },
+  {
+    "code": "RO",
+    "name": "Romania",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 21529967,
+    "capital": ""
+  },
+  {
+    "code": "RU",
+    "name": "Russia",
+    "continent": "Europe",
+    "economy": "3. Emerging region: BRIC",
+    "population": 142257519,
+    "capital": ""
+  },
+  {
+    "code": "RW",
+    "name": "Rwanda",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 11901484,
+    "capital": ""
+  },
+  {
+    "code": "EH",
+    "name": "W. Sahara",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 603253,
+    "capital": ""
+  },
+  {
+    "code": "SA",
+    "name": "Saudi Arabia",
+    "continent": "Asia",
+    "economy": "2. Developed region: nonG7",
+    "population": 28571770,
+    "capital": ""
+  },
+  {
+    "code": "SD",
+    "name": "Sudan",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 37345935,
+    "capital": ""
+  },
+  {
+    "code": "SS",
+    "name": "S. Sudan",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 13026129,
+    "capital": ""
+  },
+  {
+    "code": "SN",
+    "name": "Senegal",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 14668522,
+    "capital": ""
+  },
+  {
+    "code": "SG",
+    "name": "Singapore",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 5888926,
+    "capital": ""
+  },
+  {
+    "code": "GS",
+    "name": "S. Geo. and the Is.",
+    "continent": "Seven seas (open ocean)",
+    "economy": "7. Least developed region",
+    "population": 30,
+    "capital": ""
+  },
+  {
+    "code": "SH",
+    "name": "Saint Helena",
+    "continent": "Seven seas (open ocean)",
+    "economy": "6. Developing region",
+    "population": 7828,
+    "capital": ""
+  },
+  {
+    "code": "SB",
+    "name": "Solomon Is.",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 647581,
+    "capital": ""
+  },
+  {
+    "code": "SL",
+    "name": "Sierra Leone",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 6163195,
+    "capital": ""
+  },
+  {
+    "code": "SV",
+    "name": "El Salvador",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 6172011,
+    "capital": ""
+  },
+  {
+    "code": "SM",
+    "name": "San Marino",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 33537,
+    "capital": ""
+  },
+  {
+    "code": "-99",
+    "name": "Somaliland",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 3500000,
+    "capital": ""
+  },
+  {
+    "code": "SO",
+    "name": "Somalia",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 7531386,
+    "capital": ""
+  },
+  {
+    "code": "PM",
+    "name": "St. Pierre and Miquelon",
+    "continent": "North America",
+    "economy": "2. Developed region: nonG7",
+    "population": 5533,
+    "capital": ""
+  },
+  {
+    "code": "RS",
+    "name": "Serbia",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 7111024,
+    "capital": ""
+  },
+  {
+    "code": "ST",
+    "name": "São Tomé and Principe",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 201025,
+    "capital": ""
+  },
+  {
+    "code": "SR",
+    "name": "Suriname",
+    "continent": "South America",
+    "economy": "6. Developing region",
+    "population": 591919,
+    "capital": ""
+  },
+  {
+    "code": "SK",
+    "name": "Slovakia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 5445829,
+    "capital": ""
+  },
+  {
+    "code": "SI",
+    "name": "Slovenia",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 1972126,
+    "capital": ""
+  },
+  {
+    "code": "SE",
+    "name": "Sweden",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 9960487,
+    "capital": ""
+  },
+  {
+    "code": "SZ",
+    "name": "Swaziland",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 1467152,
+    "capital": ""
+  },
+  {
+    "code": "SX",
+    "name": "Sint Maarten",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 42083,
+    "capital": ""
+  },
+  {
+    "code": "SC",
+    "name": "Seychelles",
+    "continent": "Seven seas (open ocean)",
+    "economy": "6. Developing region",
+    "population": 93920,
+    "capital": ""
+  },
+  {
+    "code": "SY",
+    "name": "Syria",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 18028549,
+    "capital": ""
+  },
+  {
+    "code": "TC",
+    "name": "Turks and Caicos Is.",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 52570,
+    "capital": ""
+  },
+  {
+    "code": "TD",
+    "name": "Chad",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 12075985,
+    "capital": ""
+  },
+  {
+    "code": "TG",
+    "name": "Togo",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 7965055,
+    "capital": ""
+  },
+  {
+    "code": "TH",
+    "name": "Thailand",
+    "continent": "Asia",
+    "economy": "5. Emerging region: G20",
+    "population": 68414135,
+    "capital": ""
+  },
+  {
+    "code": "TJ",
+    "name": "Tajikistan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 8468555,
+    "capital": ""
+  },
+  {
+    "code": "TM",
+    "name": "Turkmenistan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 5351277,
+    "capital": ""
+  },
+  {
+    "code": "TL",
+    "name": "Timor-Leste",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 1291358,
+    "capital": ""
+  },
+  {
+    "code": "TO",
+    "name": "Tonga",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 106479,
+    "capital": ""
+  },
+  {
+    "code": "TT",
+    "name": "Trinidad and Tobago",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 1218208,
+    "capital": ""
+  },
+  {
+    "code": "TN",
+    "name": "Tunisia",
+    "continent": "Africa",
+    "economy": "6. Developing region",
+    "population": 11403800,
+    "capital": ""
+  },
+  {
+    "code": "TR",
+    "name": "Turkey",
+    "continent": "Asia",
+    "economy": "4. Emerging region: MIKT",
+    "population": 80845215,
+    "capital": ""
+  },
+  {
+    "code": "TW",
+    "name": "Taiwan",
+    "continent": "Asia",
+    "economy": "2. Developed region: nonG7",
+    "population": 23508428,
+    "capital": ""
+  },
+  {
+    "code": "TZ",
+    "name": "Tanzania",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 53950935,
+    "capital": ""
+  },
+  {
+    "code": "UG",
+    "name": "Uganda",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 39570125,
+    "capital": ""
+  },
+  {
+    "code": "UA",
+    "name": "Ukraine",
+    "continent": "Europe",
+    "economy": "6. Developing region",
+    "population": 44033874,
+    "capital": ""
+  },
+  {
+    "code": "UY",
+    "name": "Uruguay",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 3360148,
+    "capital": ""
+  },
+  {
+    "code": "US",
+    "name": "United States of America",
+    "continent": "North America",
+    "economy": "1. Developed region: G7",
+    "population": 326625791,
+    "capital": ""
+  },
+  {
+    "code": "UZ",
+    "name": "Uzbekistan",
+    "continent": "Asia",
+    "economy": "6. Developing region",
+    "population": 29748859,
+    "capital": ""
+  },
+  {
+    "code": "VA",
+    "name": "Vatican",
+    "continent": "Europe",
+    "economy": "2. Developed region: nonG7",
+    "population": 1000,
+    "capital": ""
+  },
+  {
+    "code": "VC",
+    "name": "St. Vin. and Gren.",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 102089,
+    "capital": ""
+  },
+  {
+    "code": "VE",
+    "name": "Venezuela",
+    "continent": "South America",
+    "economy": "5. Emerging region: G20",
+    "population": 31304016,
+    "capital": ""
+  },
+  {
+    "code": "VG",
+    "name": "British Virgin Is.",
+    "continent": "North America",
+    "economy": "2. Developed region: nonG7",
+    "population": 35015,
+    "capital": ""
+  },
+  {
+    "code": "VI",
+    "name": "U.S. Virgin Is.",
+    "continent": "North America",
+    "economy": "6. Developing region",
+    "population": 107268,
+    "capital": ""
+  },
+  {
+    "code": "VN",
+    "name": "Vietnam",
+    "continent": "Asia",
+    "economy": "5. Emerging region: G20",
+    "population": 96160163,
+    "capital": ""
+  },
+  {
+    "code": "VU",
+    "name": "Vanuatu",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 282814,
+    "capital": ""
+  },
+  {
+    "code": "WF",
+    "name": "Wallis and Futuna Is.",
+    "continent": "Oceania",
+    "economy": "6. Developing region",
+    "population": 15714,
+    "capital": ""
+  },
+  {
+    "code": "WS",
+    "name": "Samoa",
+    "continent": "Oceania",
+    "economy": "7. Least developed region",
+    "population": 200108,
+    "capital": ""
+  },
+  {
+    "code": "YE",
+    "name": "Yemen",
+    "continent": "Asia",
+    "economy": "7. Least developed region",
+    "population": 28036829,
+    "capital": ""
+  },
+  {
+    "code": "ZA",
+    "name": "South Africa",
+    "continent": "Africa",
+    "economy": "5. Emerging region: G20",
+    "population": 54841552,
+    "capital": ""
+  },
+  {
+    "code": "ZM",
+    "name": "Zambia",
+    "continent": "Africa",
+    "economy": "7. Least developed region",
+    "population": 15972000,
+    "capital": ""
+  },
+  {
+    "code": "ZW",
+    "name": "Zimbabwe",
+    "continent": "Africa",
+    "economy": "5. Emerging region: G20",
+    "population": 13805084,
+    "capital": ""
+  }
+]
