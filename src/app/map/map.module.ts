@@ -4,6 +4,7 @@ import { MapComponent } from './map.component';
 import { CountryDetailComponent } from './country-detail/country-detail.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { SafeHtmlPipe } from '../shared/pipes/SafeHtml.pipe';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     TranslateModule,
+    SafeHtmlPipe,
     //ensure that map module is CSR, only initialized on /map route
     RouterModule.forChild([{ path: '', component: MapComponent }])
 

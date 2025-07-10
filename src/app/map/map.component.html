@@ -1,16 +1,17 @@
 <h2>{{ 'MAP.TITLE' | translate }}</h2>
 <div class="map-container">
-  <object
+  <div
   #svgMap
     id="svgMap"
     type="image/svg+xml"
     aria-label="World map"
+    [innerHTML]="svgContent | safeHtml"
     class="svg-object">
-  </object>
+</div>
 </div>
 
-<app-country-detail
+<!-- <app-country-detail
   *ngIf="selectedCountryCode"
   [countryCode]="selectedCountryCode"
   (close)="closeDetail()">
-</app-country-detail>
+</app-country-detail> -->
