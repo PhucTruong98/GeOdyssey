@@ -1,4 +1,4 @@
-<h2>{{ 'MAP.TITLE' | translate }}</h2>
+<!-- <h2>{{ 'MAP.TITLE' | translate }}</h2>
 <div class="map-container">
   <div
   #svgMap
@@ -8,10 +8,30 @@
     [innerHTML]="svgContent | safeHtml"
     class="svg-object">
 </div>
+</div> -->
+
+
+<div class="map-wrapper">
+
+  <!-- World layer -->
+  <div
+    #worldLayer
+    id="svgMap"
+    class="map-layer"
+    [class.zoomed]="isZoomed"
+    [innerHTML]="worldSvg | safeHtml"
+    aria-label="World map"
+  >
 </div>
 
-<!-- <app-country-detail
-  *ngIf="selectedCountryCode"
-  [countryCode]="selectedCountryCode"
-  (close)="closeDetail()">
-</app-country-detail> -->
+  <!-- Country layer -->
+  <div
+    #countryLayer
+    class="map-layer country"
+    [class.active]="isZoomed"
+    [innerHTML]="countrySvg | safeHtml"
+  >
+</div>
+
+</div>
+

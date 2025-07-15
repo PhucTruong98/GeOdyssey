@@ -1,3 +1,5 @@
+
+
 .map-container {
   width: 100%;
   max-width: 1000px;
@@ -12,8 +14,6 @@
   border: none;
   }
 
-
-
 }
 
   @media (max-width: 600px) {
@@ -21,3 +21,62 @@
     padding: 0.5rem;
   }
 }
+
+
+:host {
+  display: block;
+  height: 100vh;      /* ← fill the full viewport height */
+  width:  100%;      /* ← fill the full viewport width */
+  overflow: hidden;
+  position: relative;
+}
+
+
+.map-wrapper {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  // top: 64px;
+  // bottom: 0; left: 0; right: 0;
+  overflow: hidden;
+}
+
+/* both layers sit on top of each other */
+.map-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  will-change: transform, filter, opacity;
+
+  transition: transform 0.6s ease, filter 0.6s ease, opacity 0.6s ease;
+  transform-origin: center center;
+}
+
+/* world map only: when zooming, scale up & blur */
+.map-layer.zoomed {
+  transform: scale(2);
+  filter: blur(5px);
+  /* optional: darken behind */
+  /* filter: blur(5px) brightness(0.7); */
+}
+
+/* country layer starts hidden */
+.map-layer.country {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* when zoomed, fade the country in on top */
+.map-layer.country.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Make the SVG itself fill its parent container */
+.map-layer svg {
+  display: block;        /* remove default inline gap */
+  width: 100% !important;
+  height: 100% !important;
+}
+
