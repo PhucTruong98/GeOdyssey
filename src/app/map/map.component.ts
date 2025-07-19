@@ -53,6 +53,9 @@ export class MapComponent implements AfterViewInit {
   isZoomed = false;
 
 
+  worldMapLineBorderThickness = 1;
+
+
   constructor(
     private platform: PlatformService,
     private http: HttpClient
@@ -65,7 +68,7 @@ export class MapComponent implements AfterViewInit {
     // 🔥 Register zoom handler here:
     this.zoomOutHandler = () => {
       const currentZoom = this.panZoomInstanceCountry!.getZoom();
-      if (currentZoom < this.initialZoomLevel * 0.9) {
+      if (currentZoom < this.initialZoomLevel * 0.6) {
         this.backToWorld();
       }
     };
@@ -105,32 +108,16 @@ export class MapComponent implements AfterViewInit {
 
       requestAnimationFrame(() => {
         setTimeout(async () => {
-          
+
           this.isZoomed = true;
 
           const svgEl = this.countryLayer.nativeElement.querySelector('svg') as SVGSVGElement;
-
-          // const svgEl = document.querySelector('.countryLayer svg') as SVGSVGElement;
           if (!svgEl) return;
-
-
-          // svgEl?.setAttribute("width", "784.077px");
-          // svgEl?.setAttribute("height", "458.627px");
           svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
-
-
           // now make it fluid
           svgEl.setAttribute('width', '100%');
           svgEl.setAttribute('height', '100%');
           svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-
-          //       const viewBox = svgEl?.getAttribute("viewBox"); // e.g., "0 0 800 600"
-          // if (viewBox) {
-          //   const [, , w, h] = viewBox.split(" ").map(Number);
-          //   svgEl?.setAttribute("width", `${w}px`);
-          //   svgEl?.setAttribute("height", `${h}px`);
-          // }
-
 
           const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
           style.textContent = `
@@ -148,9 +135,7 @@ export class MapComponent implements AfterViewInit {
 
           const regions = svgEl.querySelectorAll('path[id]') as NodeListOf<SVGPathElement>;
           regions.forEach(region => {
-
             const regionName = region.dataset['name'];
-
             if (regionName) {
               const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
               title.textContent = regionName;
@@ -170,8 +155,6 @@ export class MapComponent implements AfterViewInit {
           this.panZoomInstanceCountry = svgPanZoom(svgEl, {
             zoomEnabled: true,
             controlIconsEnabled: true,
-            
-
             minZoom: 0.5,
             maxZoom: 20
           });
@@ -235,6 +218,7 @@ export class MapComponent implements AfterViewInit {
 
     if (!svgEl) return;
 
+    svgEl.style.backgroundColor = '#ADD8E6';
     this.setupZoom(svgEl);
     this.injectHoverStyles(svgEl);
 
@@ -249,28 +233,10 @@ export class MapComponent implements AfterViewInit {
 
     if (!this.platform.isBrowser) return;
 
-    // svgEl?.setAttribute("width", "1000.077px");
-    // svgEl?.setAttribute("height", "500.627px");
-    // svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
-
-
-    // now make it fluid
+    svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
     svgEl.setAttribute('width', '100%');
     svgEl.setAttribute('height', '100%');
     svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-
-    //have to use this import statement instead of static import up there to avoid window is not define error
-    // import('svg-pan-zoom').then(({ default: svgPanZoom }) => {
-    // this.panZoomInstance = svgPanZoom(svgEl, {
-    //   zoomEnabled: true,
-    //   controlIconsEnabled: true,
-    //   fit: true,
-    //   center: true,
-    //   minZoom: 0.5,
-    //   maxZoom: 20
-    // });
-    // });
-
     // dynamic import inside browser guard
     import('svg-pan-zoom').then(mod => {
       const svgPanZoom = mod.default;
@@ -279,9 +245,58 @@ export class MapComponent implements AfterViewInit {
         controlIconsEnabled: true,
         fit: true,
         center: true,
-        minZoom: 1,
-        maxZoom: 10,
+        minZoom: 0.5,
+        maxZoom: 20,
       });
+
+      const sizes = this.panZoomInstance.getSizes();
+      let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
+      let targetWidth = sizes.height * ogRatio;
+      const zoomFactor = targetWidth / sizes.width;
+      this.panZoomInstance.zoom(zoomFactor);
+      this.panZoomInstance.center();
+      this.panZoomInstance.setMinZoom(zoomFactor);
+
+      //set scrolling boundary
+      this.panZoomInstance.setBeforePan((oldPan: any, newPan: { x: number; y: number; }) => {
+        const sizes = this.panZoomInstance.getSizes();
+        // real content size (in px) after current zoom
+        const realW = sizes.viewBox.width * sizes.realZoom;
+        const realH = sizes.viewBox.height * sizes.realZoom;
+
+        // container size in px
+        const contW = sizes.width;
+        const contH = sizes.height;
+
+        // compute the min/max pan.x so the content always overlaps the container
+        const minX = Math.min(0, contW - realW);
+        const maxX = 0;
+        // likewise for pan.y
+        const minY = Math.min(0, contH - realH);
+        const maxY = 0;
+
+        // clamp
+        return {
+          x: Math.max(minX, Math.min(newPan.x, maxX)),
+          y: Math.max(minY, Math.min(newPan.y, maxY))
+        };
+      });
+
+      //set onZoom listener
+      this.panZoomInstance.setOnZoom((newZoom: number) => {
+        // const sw = baseStroke / newZoom;
+        // svgEl.querySelectorAll('path').forEach(p => p.setAttribute('stroke-width', `${sw}`));
+        const landGroup = svgEl.querySelector('#world-map')!;
+        let zoomRatio = newZoom / zoomFactor;
+        let newThick = this.worldMapLineBorderThickness * zoomRatio;
+        // landGroup.setAttribute('stroke-width', `${this.worldMapLineBorderThickness * zoomRatio}px`);
+        this.worldLayer.nativeElement
+      .style
+      .setProperty('--land-stroke', `${newThick}px`);
+
+
+      });
+
     }).catch(err => {
       console.error('Could not load svg-pan-zoom in browser:', err);
     });
@@ -296,16 +311,25 @@ export class MapComponent implements AfterViewInit {
           transition: fill 0.3s ease, stroke 0.3s ease;
         }
         path:hover {
-          fill: #1976d2;
+          fill:rgb(246, 137, 137);
           stroke: #fff;
           stroke-width: 1.5;
-          filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+          filter: drop-shadow(0 0 2px rgba(30, 246, 178, 0.3));
         }
       `;
     svgEl.appendChild(style!);
   }
 
   setupCountry(p: SVGPathElement, svgEl: SVGSVGElement) {
+
+    p.setAttribute('fill', '#FFD8A9');
+    p.setAttribute('stroke', '#ccc');
+    p.setAttribute('stroke-width', '0.5');
+
+    p.setAttribute('stroke', '#000');
+    // p.setAttribute('stroke-width', '0.1');
+    p.setAttribute('stroke-linejoin', 'round');
+    p.setAttribute('stroke-linecap', 'round');
 
     const code = p.id?.toUpperCase();
     const name = this.countryMap[code];
@@ -355,44 +379,28 @@ export class MapComponent implements AfterViewInit {
   }
 
 
-  smoothZoomAndPanToWithGSAP(targetZoom: number, targetPan: { x: number; y: number }) {
-    if (!this.panZoomInstance) return;
+  // smoothZoomAndPanToWithGSAP(targetZoom: number, targetPan: { x: number; y: number }) {
+  //   if (!this.panZoomInstance) return;
 
-    const currentZoom = this.panZoomInstance.getZoom();
-    const currentPan = this.panZoomInstance.getPan();
+  //   const currentZoom = this.panZoomInstance.getZoom();
+  //   const currentPan = this.panZoomInstance.getPan();
 
-    const panZoom = this.panZoomInstance; // ✅ capture instance locally
+  //   const panZoom = this.panZoomInstance; // ✅ capture instance locally
 
-    gsap.to({ zoom: currentZoom, x: currentPan.x, y: currentPan.y }, {
-      zoom: targetZoom,
-      x: targetPan.x,
-      y: targetPan.y,
-      duration: 0.6,
-      ease: 'power2.inOut',
-      onUpdate: function () {
-        const state = this['targets']()[0]; // internal gsap target
-        panZoom.zoom(state.zoom);
-        panZoom.pan({ x: state.x, y: state.y });
-      }
-    });
-  }
-
-
-  // @HostListener('window:resize')
-  // onResize() {
-  //   // Resize and re-fit the world map
-  //   if (this.panZoomInstance) {
-  //     this.panZoomInstance.resize();
-  //     this.panZoomInstance.fit();
-  //     this.panZoomInstance.center();
-  //   }
-  //   // Resize and re-fit the country map
-  //   if (this.panZoomInstanceCountry) {
-  //     this.panZoomInstanceCountry.resize();
-  //     this.panZoomInstanceCountry.fit();
-  //     this.panZoomInstanceCountry.center();
-  //   }
+  //   gsap.to({ zoom: currentZoom, x: currentPan.x, y: currentPan.y }, {
+  //     zoom: targetZoom,
+  //     x: targetPan.x,
+  //     y: targetPan.y,
+  //     duration: 0.6,
+  //     ease: 'power2.inOut',
+  //     onUpdate: function () {
+  //       const state = this['targets']()[0]; // internal gsap target
+  //       panZoom.zoom(state.zoom);
+  //       panZoom.pan({ x: state.x, y: state.y });
+  //     }
+  //   });
   // }
+
 
   backToWorld() {
     this.isZoomed = false;
@@ -407,32 +415,9 @@ export class MapComponent implements AfterViewInit {
         // this.zoomOutHandler = null;
       }
 
-      // const currentZoom = this.panZoomInstance.getZoom();
-      // const currentPan = this.panZoomInstance.getPan();
 
-      // const targetZoom = 1;
-      // const targetPan = { x: 0, y: 0 };
-      // const panZoom = this.panZoomInstance; // ✅ capture for scope safety
-
-      // gsap.to({ zoom: currentZoom, x: currentPan.x, y: currentPan.y }, {
-      //   zoom: targetZoom,
-      //   x: targetPan.x,
-      //   y: targetPan.y,
-      //   duration: 0.5,
-      //   ease: 'power2.inOut',
-      //   onUpdate: function () {
-      //     const state = this['targets']()[0];
-      //     panZoom.zoom(state.zoom);
-      //     panZoom.pan({ x: state.x, y: state.y });
-      //   },
-      //   onComplete: () => {
-      //     this.currentCountryCode = null;
-      //     this.loadWorldMap();
-      //   }
-      // });
     } else {
       this.currentCountryCode = null;
-      // this.loadWorldMap();
     }
 
   }

@@ -1,15 +1,6 @@
-<!-- <h2>{{ 'MAP.TITLE' | translate }}</h2>
-<div class="map-container">
-  <div
-  #svgMap
-    id="svgMap"
-    type="image/svg+xml"
-    aria-label="World map"
-    [innerHTML]="svgContent | safeHtml"
-    class="svg-object">
-</div>
-</div> -->
 
+
+<div class="main-map">
 
 <div class="map-wrapper">
 
@@ -25,13 +16,19 @@
 </div>
 
   <!-- Country layer -->
-  <div
+   <div
+>
+<div
     #countryLayer
-    class="map-layer country"
+    class="map-layer country" 
     [class.active]="isZoomed"
     [innerHTML]="countrySvg | safeHtml"
   >
 </div>
+   </div>
+  
 
 </div>
 
+
+</div>

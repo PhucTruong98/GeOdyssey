@@ -9,4 +9,27 @@ body {
   --primary-button-color: #7bbdff;
   --accent-color: #9deaff;
   --text-light: #f1f1f1;
+    --header-height: 64px;
+
 }
+
+
+
+app-root {
+  display: grid;
+  grid-template-rows: auto 1fr;   /* header auto-sized, content fills rest */
+  height: 100%;                   /* full viewport, thanks to html/body */
+  margin: 0;
+}
+
+.header {
+  grid-row: 1;                    /* lives in the first (auto) row */
+}
+
+.page-content {
+  grid-row: 2;                    /* everything else goes here */
+  position: relative;             /* for your absolute‐positioned maps */
+  overflow: hidden;               /* clip any overflow */
+}
+
+
