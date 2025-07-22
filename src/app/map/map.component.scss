@@ -7,6 +7,9 @@
   overflow: hidden;
   position: relative;
 
+  /* Custom properties for label control */
+  --label-font: 12px; // base font size at zoom=1
+  --label-opacity: 0; // hidden at low zoom
 
 
   .map-wrapper {
@@ -36,14 +39,7 @@
         width: 100% !important;
         height: 100% !important;
 
-          --land-stroke: 1px;
-
-        path {
-
-          /* use the CSS var for stroke width */
-          stroke-width: var(--land-stroke) !important;
-        }
-
+        
       }
 
       &.zoomed {

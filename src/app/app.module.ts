@@ -11,7 +11,6 @@ import { environment } from '../../environments/environment';
 import {  HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { CountryDetailComponent } from './map/country-detail/country-detail.component';
 import { MapModule } from './map/map.module';
 import { CoreModule } from "./core/core.module";
 import { ProfileModule } from './profile/profile.module';
