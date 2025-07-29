@@ -15,17 +15,13 @@
   >
 </div>
 
-  <!-- Country layer -->
-   <div
->
-<div
-    #countryLayer
-    class="map-layer country" 
-    [class.active]="isZoomed"
-    [innerHTML]="countrySvg | safeHtml"
+
+   <app-country-map 
+    (isZoomed)="isZoomed = $event"
+    >
+
   >
-</div>
-   </div>
+</app-country-map>
   
 
 </div>

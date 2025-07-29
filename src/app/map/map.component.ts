@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import countryData from '../../assets/data/countries.json';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
@@ -6,6 +6,7 @@ import { PlatformService } from '../core/services/platform.service';
 import { HttpClient } from '@angular/common/http';
 import gsap from 'gsap';
 import * as C from '../shared/constants';
+import { CountryMapComponent } from './country-map/country-map.component';
 
 
 interface Region {
@@ -30,7 +31,11 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild('worldLayer', { static: true }) worldLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild('countryLayer', { static: true }) countryLayer!: ElementRef<HTMLObjectElement>;
+  @ViewChild(CountryMapComponent, { static: false })
+  private countryCmp!: CountryMapComponent;
 
+
+  
   worldSvg = "";
   countrySvg = "";
 
@@ -38,7 +43,7 @@ export class MapComponent implements AfterViewInit {
   private cachedSvg: string | null = null;
 
   countryMap: Record<string, string> = {};
-  currentCountryCode: string | null = null;
+  currentCountryCode: string = "";
   regions: Region[] = [];
   selectedRegion: Region | null = null;
 
@@ -46,11 +51,11 @@ export class MapComponent implements AfterViewInit {
   private panZoomInstance: any;
   private panZoomInstanceCountry: any;
 
-  private zoomOutHandler: (() => void) | null = null;
+  // private zoomOutHandler: (() => void) | null = null;
 
   initialZoomLevel: any;
   isLoadingMap = false;
-  hasInitializedSvg: any;
+  hasInitializedSvg: any; 
   isZoomed = false;
 
 
@@ -62,20 +67,21 @@ export class MapComponent implements AfterViewInit {
 
   constructor(
     private platform: PlatformService,
-    private http: HttpClient
+    private http: HttpClient,
+    private cd: ChangeDetectorRef
 
   ) { }
 
   ngAfterViewInit(): void {
     if (!this.platform.isBrowser) return;
 
-    // 🔥 Register zoom handler here:
-    this.zoomOutHandler = () => {
-      const currentZoom = this.panZoomInstanceCountry!.getZoom();
-      if (currentZoom < this.initialZoomLevel * 0.6) {
-        this.backToWorld();
-      }
-    };
+    // // 🔥 Register zoom handler here:
+    // this.zoomOutHandler = () => {
+    //   const currentZoom = this.panZoomInstanceCountry!.getZoom();
+    //   if (currentZoom < this.initialZoomLevel * 0.6) {
+    //     this.backToWorld();
+    //   }
+    // };
 
 
     //build lookup map for countries
@@ -89,94 +95,94 @@ export class MapComponent implements AfterViewInit {
 
 
 
-  loadCountryMap(code: string) {
-    if (this.isLoadingMap) return;
-    this.isLoadingMap = true;
+  // loadCountryMap(code: string) {
+  //   if (this.isLoadingMap) return;
+  //   this.isLoadingMap = true;
 
-    // this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
-    this.currentCountryCode = code;
-    this.selectedRegion = null;
+  //   // this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
+  //   this.currentCountryCode = code;
+  //   this.selectedRegion = null;
 
-    const url = `assets/maps/countries/${code}/${code}.svg`;
+  //   const url = `assets/maps/countries/${code}/${code}.svg`;
 
-    // this.svgMap.nativeElement.data = `assets/maps/countries/${code}/regions.svg`;
+  //   // this.svgMap.nativeElement.data = `assets/maps/countries/${code}/regions.svg`;
 
-    this.http.get(url, { responseType: 'text' }).subscribe(async svg => {
-      this.countrySvg = svg;
-      // this.svgContent = svg;
-      this.currentCountryCode = code;
+  //   this.http.get(url, { responseType: 'text' }).subscribe(async svg => {
+  //     this.countrySvg = svg;
+  //     // this.svgContent = svg;
+  //     this.currentCountryCode = code;
 
-      if (this.panZoomInstanceCountry) {
-        this.panZoomInstanceCountry.destroy();
-      }
+  //     if (this.panZoomInstanceCountry) {
+  //       this.panZoomInstanceCountry.destroy();
+  //     }
 
-      requestAnimationFrame(() => {
-        setTimeout(async () => {
+  //     requestAnimationFrame(() => {
+  //       setTimeout(async () => {
 
-          this.isZoomed = true;
+  //         // this.isZoomed = true;
 
-          const svgEl = this.countryLayer.nativeElement.querySelector('svg') as SVGSVGElement;
-          if (!svgEl) return;
-          svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
-          // now make it fluid
-          svgEl.setAttribute('width', '100%');
-          svgEl.setAttribute('height', '100%');
-          svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+  //         const svgEl = this.countryLayer.nativeElement.querySelector('svg') as SVGSVGElement;
+  //         if (!svgEl) return;
+  //         svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
+  //         // now make it fluid
+  //         svgEl.setAttribute('width', '100%');
+  //         svgEl.setAttribute('height', '100%');
+  //         svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
-          const style = document.createElementNS(C.SVG_NS, 'style');
-          style.textContent = `
-        path {
-          transition: fill 0.3s ease, stroke 0.3s ease;
-        }
-        path:hover {
-          fill: #388e3c;
-          stroke: #fff;
-          stroke-width: 1.5;
-          filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
-        }
-      `;
-          svgEl.appendChild(style);
+  //         const style = document.createElementNS(C.SVG_NS, 'style');
+  //         style.textContent = `
+  //       path {
+  //         transition: fill 0.3s ease, stroke 0.3s ease;
+  //       }
+  //       path:hover {
+  //         fill: #388e3c;
+  //         stroke: #fff;
+  //         stroke-width: 1.5;
+  //         filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+  //       }
+  //     `;
+  //         svgEl.appendChild(style);
 
-          const regions = svgEl.querySelectorAll('path[id]') as NodeListOf<SVGPathElement>;
-          regions.forEach(region => {
-            const regionName = region.dataset['name'];
-            if (regionName) {
-              const title = document.createElementNS(C.SVG_NS, 'title');
-              title.textContent = regionName;
-              region.appendChild(title);
-            }
+  //         const regions = svgEl.querySelectorAll('path[id]') as NodeListOf<SVGPathElement>;
+  //         regions.forEach(region => {
+  //           const regionName = region.dataset['name'];
+  //           if (regionName) {
+  //             const title = document.createElementNS(C.SVG_NS, 'title');
+  //             title.textContent = regionName;
+  //             region.appendChild(title);
+  //           }
 
-            region.style.cursor = 'pointer';
-
-
-            region.addEventListener('click', () => {
-              const regionCode = region.id.toUpperCase();
-              this.selectedRegion = this.regions.find(r => r.code === regionCode) || null;
-            });
-          });
-
-          const { default: svgPanZoom } = await import('svg-pan-zoom');
-          this.panZoomInstanceCountry = svgPanZoom(svgEl, {
-            zoomEnabled: true,
-            controlIconsEnabled: true,
-            minZoom: 0.5,
-            maxZoom: 20
-          });
+  //           region.style.cursor = 'pointer';
 
 
-          this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
-          // this.panZoomInstanceCountry.zoom(1.3);
+  //           region.addEventListener('click', () => {
+  //             const regionCode = region.id.toUpperCase();
+  //             this.selectedRegion = this.regions.find(r => r.code === regionCode) || null;
+  //           });
+  //         });
 
-          //add listtener for zooming out event
-          this.panZoomInstanceCountry.setOnZoom(this.zoomOutHandler);
+  //         const { default: svgPanZoom } = await import('svg-pan-zoom');
+  //         this.panZoomInstanceCountry = svgPanZoom(svgEl, {
+  //           zoomEnabled: true,
+  //           controlIconsEnabled: true,
+  //           minZoom: 0.5,
+  //           maxZoom: 20
+  //         });
 
-          this.isLoadingMap = false;
-        }, 0);
 
-      });
-    });
+  //         this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
+  //         // this.panZoomInstanceCountry.zoom(1.3);
 
-  }
+  //         //add listtener for zooming out event
+  //         this.panZoomInstanceCountry.setOnZoom(this.zoomOutHandler);
+
+  //         this.isLoadingMap = false;
+  //       }, 0);
+
+  //     });
+  //   });
+
+  // }
 
 
   loadWorldMap() {
@@ -490,31 +496,37 @@ export class MapComponent implements AfterViewInit {
       // Optional: load country data after zoom
       setTimeout(() => {
         const code = p.id.toUpperCase();
-        this.loadCountryMap(code);
-        this.selectedCountryCode = code;
+        // this.loadCountryMap(code);
+        // this.selectedCountryCode = code;
+        this.currentCountryCode = code;
+        //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
+        this.cd.detectChanges();
+
+        this.countryCmp.loadCountryMap(code);
+
 
       }, 400); // allow zoom animation before changing
     });
   }
 
-  backToWorld() {
-    this.isZoomed = false;
-    this.currentCountryCode = null;
-    this.countrySvg = '';
+  // backToWorld() {
+  //   // this.isZoomed = false;
+  //   this.currentCountryCode = "";
+  //   this.countrySvg = '';
 
-    if (this.panZoomInstanceCountry) {
+  //   if (this.panZoomInstanceCountry) {
 
-      // Remove zoom listener
-      if (this.zoomOutHandler) {
-        this.panZoomInstanceCountry?.setOnZoom(() => { });
-        // this.zoomOutHandler = null;
-      }
+  //     // Remove zoom listener
+  //     if (this.zoomOutHandler) {
+  //       this.panZoomInstanceCountry?.setOnZoom(() => { });
+  //       // this.zoomOutHandler = null;
+  //     }
 
 
-    } else {
-      this.currentCountryCode = null;
-    }
+  //   } else {
+  //     this.currentCountryCode = "";
+  //   }
 
-  }
+  // }
 
 }

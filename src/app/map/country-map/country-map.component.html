@@ -1,1 +1,13 @@
-<p>country-map works!</p>
+<div
+>
+<div
+    #countryLayer
+    *ngIf="countrySvg != '' "
+    class="map-layer country" 
+    [class.active]="true"
+    [innerHTML]="countrySvg | safeHtml"
+  >
+</div>
+   </div>
+  
+
