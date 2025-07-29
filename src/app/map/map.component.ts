@@ -35,7 +35,7 @@ export class MapComponent implements AfterViewInit {
   private countryCmp!: CountryMapComponent;
 
 
-  
+
   worldSvg = "";
   countrySvg = "";
 
@@ -55,7 +55,7 @@ export class MapComponent implements AfterViewInit {
 
   initialZoomLevel: any;
   isLoadingMap = false;
-  hasInitializedSvg: any; 
+  hasInitializedSvg: any;
   isZoomed = false;
 
 
@@ -95,94 +95,6 @@ export class MapComponent implements AfterViewInit {
 
 
 
-  // loadCountryMap(code: string) {
-  //   if (this.isLoadingMap) return;
-  //   this.isLoadingMap = true;
-
-  //   // this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
-  //   this.currentCountryCode = code;
-  //   this.selectedRegion = null;
-
-  //   const url = `assets/maps/countries/${code}/${code}.svg`;
-
-  //   // this.svgMap.nativeElement.data = `assets/maps/countries/${code}/regions.svg`;
-
-  //   this.http.get(url, { responseType: 'text' }).subscribe(async svg => {
-  //     this.countrySvg = svg;
-  //     // this.svgContent = svg;
-  //     this.currentCountryCode = code;
-
-  //     if (this.panZoomInstanceCountry) {
-  //       this.panZoomInstanceCountry.destroy();
-  //     }
-
-  //     requestAnimationFrame(() => {
-  //       setTimeout(async () => {
-
-  //         // this.isZoomed = true;
-
-  //         const svgEl = this.countryLayer.nativeElement.querySelector('svg') as SVGSVGElement;
-  //         if (!svgEl) return;
-  //         svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
-  //         // now make it fluid
-  //         svgEl.setAttribute('width', '100%');
-  //         svgEl.setAttribute('height', '100%');
-  //         svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-
-  //         const style = document.createElementNS(C.SVG_NS, 'style');
-  //         style.textContent = `
-  //       path {
-  //         transition: fill 0.3s ease, stroke 0.3s ease;
-  //       }
-  //       path:hover {
-  //         fill: #388e3c;
-  //         stroke: #fff;
-  //         stroke-width: 1.5;
-  //         filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
-  //       }
-  //     `;
-  //         svgEl.appendChild(style);
-
-  //         const regions = svgEl.querySelectorAll('path[id]') as NodeListOf<SVGPathElement>;
-  //         regions.forEach(region => {
-  //           const regionName = region.dataset['name'];
-  //           if (regionName) {
-  //             const title = document.createElementNS(C.SVG_NS, 'title');
-  //             title.textContent = regionName;
-  //             region.appendChild(title);
-  //           }
-
-  //           region.style.cursor = 'pointer';
-
-
-  //           region.addEventListener('click', () => {
-  //             const regionCode = region.id.toUpperCase();
-  //             this.selectedRegion = this.regions.find(r => r.code === regionCode) || null;
-  //           });
-  //         });
-
-  //         const { default: svgPanZoom } = await import('svg-pan-zoom');
-  //         this.panZoomInstanceCountry = svgPanZoom(svgEl, {
-  //           zoomEnabled: true,
-  //           controlIconsEnabled: true,
-  //           minZoom: 0.5,
-  //           maxZoom: 20
-  //         });
-
-
-  //         this.initialZoomLevel = this.panZoomInstanceCountry.getZoom();
-  //         // this.panZoomInstanceCountry.zoom(1.3);
-
-  //         //add listtener for zooming out event
-  //         this.panZoomInstanceCountry.setOnZoom(this.zoomOutHandler);
-
-  //         this.isLoadingMap = false;
-  //       }, 0);
-
-  //     });
-  //   });
-
-  // }
 
 
   loadWorldMap() {
@@ -343,9 +255,9 @@ export class MapComponent implements AfterViewInit {
         const op = {
           vlarge: 1 / zoomRatio > THRESHOLDS.vlarge ? '1' : '0',
           large: 1 / zoomRatio > THRESHOLDS.large ? '1' : '0',
-          medium: 1/ zoomRatio > THRESHOLDS.medium ? '1' : '0',
+          medium: 1 / zoomRatio > THRESHOLDS.medium ? '1' : '0',
           small: 1 / zoomRatio > THRESHOLDS.small ? '1' : '0',
-          vsmall: 1 /zoomRatio > THRESHOLDS.vsmall ? '1' : '0'
+          vsmall: 1 / zoomRatio > THRESHOLDS.vsmall ? '1' : '0'
         };
 
         // 3) Apply all six vars in one go
@@ -405,6 +317,7 @@ export class MapComponent implements AfterViewInit {
           stroke-width: var(--hover-stroke) !important;;
           filter: drop-shadow(0 0 2px rgba(30, 246, 178, 0.3));
         }
+
         /* define your vars at the SVG root */
 
 
@@ -429,9 +342,21 @@ export class MapComponent implements AfterViewInit {
       stroke-width: var(--label-font-cover);
       paint-order: stroke fill;
       stroke-linejoin: round;
+    filter: drop-shadow(0 0 var(--label-font-cover) rgba(0,0,0,0.5));
 
       pointer-events: none; /* so clicks fall through */
     }
+
+  text.country-label:hover {
+    /* change fill if you want… */
+    fill: #e63946;
+    /* add a white border */
+    stroke: #fff;
+    stroke-width: var(--label-font-cover);
+    paint-order: stroke fill;
+    /* optional drop-shadow for extra pop */
+    filter: drop-shadow(0 0 var(--label-font-cover) rgba(0,0,0,0.5));
+  }
 
     text.country-label.very-large { opacity: var(--opacity-vlarge); }
     text.country-label.large      { opacity: var(--opacity-large); }
@@ -478,55 +403,47 @@ export class MapComponent implements AfterViewInit {
       text.setAttribute('class', `country-label ${cls}`);
       text.setAttribute('x', cx.toString());
       text.setAttribute('y', cy.toString());
+
+      text.setAttribute('role', 'button');           // ARIA
+      text.setAttribute('tabindex', '0');            // keyboard focus
+      text.style.cursor = 'pointer';                 // show hand cursor
+      text.style.pointerEvents = 'all';              // ensure it receives clicks
+
+
       text.textContent = name;
 
+      text.addEventListener('click', () => this.onCountryClicked(p));
 
 
-      // derive label from <title> or fallback to id
-      text.textContent = name;
+
+
 
       labelsGroup.appendChild(text);
 
     }
 
     p.style.cursor = 'pointer';
-    p.addEventListener('click', () => {
-      if (!this.panZoomInstance) return;
-
-      // Optional: load country data after zoom
-      setTimeout(() => {
-        const code = p.id.toUpperCase();
-        // this.loadCountryMap(code);
-        // this.selectedCountryCode = code;
-        this.currentCountryCode = code;
-        //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
-        this.cd.detectChanges();
-
-        this.countryCmp.loadCountryMap(code);
-
-
-      }, 400); // allow zoom animation before changing
-    });
+    p.addEventListener('click', () => this.onCountryClicked(p));
   }
 
-  // backToWorld() {
-  //   // this.isZoomed = false;
-  //   this.currentCountryCode = "";
-  //   this.countrySvg = '';
 
-  //   if (this.panZoomInstanceCountry) {
+  onCountryClicked(p: SVGPathElement) {
+    if (!this.panZoomInstance) return;
 
-  //     // Remove zoom listener
-  //     if (this.zoomOutHandler) {
-  //       this.panZoomInstanceCountry?.setOnZoom(() => { });
-  //       // this.zoomOutHandler = null;
-  //     }
+    // Optional: load country data after zoom
+    setTimeout(() => {
+      const code = p.id.toUpperCase();
+      // this.loadCountryMap(code);
+      // this.selectedCountryCode = code;
+      this.currentCountryCode = code;
+      //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
+      this.cd.detectChanges();
+
+      this.countryCmp.loadCountryMap(code);
 
 
-  //   } else {
-  //     this.currentCountryCode = "";
-  //   }
+    }, 400); // allow zoom animation before changing
 
-  // }
+  }
 
 }
