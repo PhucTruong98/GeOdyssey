@@ -32,9 +32,19 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('worldLayer', { static: true }) worldLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild('countryLayer', { static: true }) countryLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild(CountryMapComponent, { static: false })
+  
   private countryCmp!: CountryMapComponent;
 
 
+
+
+  @ViewChild('mapWrapper', { static: false }) mapWrapperRef!: ElementRef;
+
+
+  curHeight = 0;
+  curWidth = 0;
+
+  svgEl!: SVGSVGElement;
 
   worldSvg = "";
   countrySvg = "";
@@ -57,6 +67,7 @@ export class MapComponent implements AfterViewInit {
   isLoadingMap = false;
   hasInitializedSvg: any;
   isZoomed = false;
+  isScreenWide = false;
 
 
   worldMapLineBorderThickness = 0.5;
@@ -82,6 +93,9 @@ export class MapComponent implements AfterViewInit {
     //     this.backToWorld();
     //   }
     // };
+    const wrapperEl = this.mapWrapperRef.nativeElement as HTMLElement;
+    this.curHeight = wrapperEl.offsetHeight;
+    this.curWidth = wrapperEl.offsetWidth;
 
 
     //build lookup map for countries
@@ -90,6 +104,7 @@ export class MapComponent implements AfterViewInit {
     });
 
     this.loadWorldMap();
+
 
   }
 
@@ -140,12 +155,27 @@ export class MapComponent implements AfterViewInit {
 
     if (!svgEl) return;
 
+    this.svgEl = svgEl;
 
     svgEl.style.backgroundColor = '#ADD8E6';
-    // Create a group to hold all labels
-    const labelsGroup = document.createElementNS(C.SVG_NS, 'g');
-    labelsGroup.setAttribute('id', 'country-labels');
-    svgEl.appendChild(labelsGroup);
+
+
+
+    // 1) Create a group for each size class
+    const sizeClasses = ['vlarge', 'large', 'medium', 'small', 'vsmall'] as const;
+    const groups: Record<string, SVGGElement> = {};
+    sizeClasses.forEach(cls => {
+      const g = document.createElementNS(C.SVG_NS, 'g');
+      g.setAttribute('id', `labels-${cls}`);
+      // default to no pointer-events; we'll enable on zoom
+      // g.setAttribute('pointer-events', 'none');
+      svgEl.appendChild(g);
+      groups[cls] = g;
+    });
+
+
+
+
 
     //add names
     const paths = Array.from(svgEl.querySelectorAll<SVGPathElement>('path[id]'));
@@ -165,7 +195,7 @@ export class MapComponent implements AfterViewInit {
     this.injectHoverStyles(svgEl);
 
     const countries = svgEl.querySelectorAll<SVGPathElement>('path[id]');
-    countries.forEach((path, i) => this.setupCountry(path as SVGPathElement, svgEl, labelsGroup, i));
+    countries.forEach((path, i) => this.setupCountry(path as SVGPathElement, svgEl, i, groups));
 
 
   }
@@ -175,10 +205,37 @@ export class MapComponent implements AfterViewInit {
 
     if (!this.platform.isBrowser) return;
 
-    svgEl.setAttribute('viewBox', `0 0 ${svgEl.getAttribute('width')} ${svgEl.getAttribute('height')}`);
-    svgEl.setAttribute('width', '100%');
-    svgEl.setAttribute('height', '100%');
-    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    const originalWidth = svgEl.getAttribute('width');
+    const originalHeight = svgEl.getAttribute('height');
+
+    // const sizes = this.panZoomInstance.getSizes();
+    let ogRatio = 1000/482;
+    let zoomFactor = 1;
+    let targetHeight = this.curHeight;
+    let targetWidth = this.curHeight * ogRatio;
+    this.initialZoomLevel = this.curHeight / 482;
+
+
+
+
+    if(this.curWidth / this.curHeight > ogRatio)
+    {
+
+      this.isScreenWide = true;
+      targetWidth = this.curWidth;
+      targetHeight = targetWidth / ogRatio;
+      this.initialZoomLevel = this.curWidth / 1000;
+
+    }
+
+
+    svgEl.setAttribute('width', targetWidth.toString());
+    svgEl.setAttribute('height', targetHeight.toString());
+    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+
+
+    // svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     // dynamic import inside browser guard
     import('svg-pan-zoom').then(mod => {
       const svgPanZoom = mod.default;
@@ -188,16 +245,47 @@ export class MapComponent implements AfterViewInit {
         fit: true,
         center: true,
         minZoom: 0.5,
-        maxZoom: 30,
+        maxZoom: 1000,
+        onPan: (newPan: { x: number; y: number }) => {
+          console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
+          // e.g. update a component property
+          // this.currentPan = newPan;
+        }
       });
 
+
+
+      // const sizes = this.panZoomInstance.getSizes();
+      // let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
+      // let targetWidth = sizes.height * ogRatio;
+      // let zoomFactor = 1;
+
       const sizes = this.panZoomInstance.getSizes();
-      let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
+      let ogRatio = 1000/482;
       let targetWidth = sizes.height * ogRatio;
-      const zoomFactor = targetWidth / sizes.width;
+      let zoomFactor = 1;
+
+
+
+
+      // if (sizes.width <= targetWidth) {
+      //   zoomFactor = targetWidth / sizes.width;
+      // }
+
+      // else if (sizes.width > targetWidth) {
+      //   zoomFactor *= sizes.width / targetWidth;
+      // }
+
+
+
+
       // this.panZoomInstance.zoom(zoomFactor);
       this.panZoomInstance.center();
+      this.panZoomInstance.resize();
       this.panZoomInstance.setMinZoom(zoomFactor);
+      // this.initialZoomLevel = zoomFactor;
+      this.onZoomHandler(zoomFactor);
+
 
       //set scrolling boundary
       this.panZoomInstance.setBeforePan((oldPan: any, newPan: { x: number; y: number; }) => {
@@ -207,8 +295,8 @@ export class MapComponent implements AfterViewInit {
         const realH = sizes.viewBox.height * sizes.realZoom;
 
         // container size in px
-        const contW = sizes.width;
-        const contH = sizes.height;
+        const contW = this.curWidth;
+        const contH = this.curHeight;
 
         // compute the min/max pan.x so the content always overlaps the container
         const minX = Math.min(0, contW - realW);
@@ -226,57 +314,11 @@ export class MapComponent implements AfterViewInit {
 
       //set onZoom listener
       this.panZoomInstance.setOnZoom((newZoom: number) => {
-        const BASE_FONT = 10;       // px at zoom = 1
-        const THRESHOLDS = {
-          vlarge: 0.5,
-          large: 3.0,
-          medium: 6.0,
-          small: 9.0,
-          vsmall: 12.0
-        };        // const sw = baseStroke / newZoom;
-        // svgEl.querySelectorAll('path').forEach(p => p.setAttribute('stroke-width', `${sw}`));
-        const landGroup = svgEl.querySelector('#world-map')!;
-        let zoomRatio = zoomFactor / newZoom;
-        let newThick = this.worldMapLineBorderThickness * zoomRatio;
-        landGroup.setAttribute('stroke-width', `${newThick}px`);
-        svgEl.style.setProperty('--hover-stroke', `${newThick}px`);
 
-        //set country label size
-        const fontSize = (BASE_FONT * zoomRatio).toFixed(1) + 'px';
-        const borderFontSize = (BASE_FONT * zoomRatio / 4).toFixed(1) + 'px';
-
-        // let fontSize = "20px";
-        // 2) Decide visibility
-        // const opacity = zoomRatio > SHOW_THRESHOLD ? '1' : '0';
-        // const opacity  = "1";
-
-
-        // 2) Compute each category’s opacity
-        const op = {
-          vlarge: 1 / zoomRatio > THRESHOLDS.vlarge ? '1' : '0',
-          large: 1 / zoomRatio > THRESHOLDS.large ? '1' : '0',
-          medium: 1 / zoomRatio > THRESHOLDS.medium ? '1' : '0',
-          small: 1 / zoomRatio > THRESHOLDS.small ? '1' : '0',
-          vsmall: 1 / zoomRatio > THRESHOLDS.vsmall ? '1' : '0'
-        };
-
-        // 3) Apply all six vars in one go
-        const s = svgEl.style;
-
-        s.setProperty('--opacity-vlarge', op.vlarge);
-        s.setProperty('--opacity-large', op.large);
-        s.setProperty('--opacity-medium', op.medium);
-        s.setProperty('--opacity-small', op.small);
-        s.setProperty('--opacity-vsmall', op.vsmall);
-
-        // 3) Apply both in one go
-        svgEl.style.setProperty('--label-font', fontSize);
-        s.setProperty('--label-font-cover', borderFontSize);
-
-        // svgEl.style.setProperty('--label-opacity', "1");
+        this.onZoomHandler(newZoom);
       });
 
-      this.panZoomInstance.zoom(zoomFactor);
+
 
 
     }).catch(err => {
@@ -292,20 +334,9 @@ export class MapComponent implements AfterViewInit {
     const style = document.createElementNS(C.SVG_NS, 'style');
 
     svgEl.style.setProperty('--hover-stroke', '1px');
-
-
-
-
-
-
     style.textContent = `
         :root {
       --label-font:        12px;
-      --opacity-vlarge:    0;
-      --opacity-large:     0;
-      --opacity-medium:    0;
-      --opacity-small:     0;
-      --opacity-vsmall:    0;
     }
 
         path {
@@ -323,7 +354,7 @@ export class MapComponent implements AfterViewInit {
 
     svg {
       --label-font: 6px;     /* initial font size */
-      --label-opacity: 1;      /* hidden by default */
+      --label-opacity: 0;      /* hidden by default */
     }
 
     /* hover, land, etc… your existing path rules… */
@@ -335,7 +366,6 @@ export class MapComponent implements AfterViewInit {
       fill: #000;
       text-anchor: middle;
       dominant-baseline: middle;
-      opacity: var(--label-opacity);
 
       /* */
       stroke: #fff;
@@ -344,7 +374,6 @@ export class MapComponent implements AfterViewInit {
       stroke-linejoin: round;
     filter: drop-shadow(0 0 var(--label-font-cover) rgba(0,0,0,0.5));
 
-      pointer-events: none; /* so clicks fall through */
     }
 
   text.country-label:hover {
@@ -358,16 +387,11 @@ export class MapComponent implements AfterViewInit {
     filter: drop-shadow(0 0 var(--label-font-cover) rgba(0,0,0,0.5));
   }
 
-    text.country-label.very-large { opacity: var(--opacity-vlarge); }
-    text.country-label.large      { opacity: var(--opacity-large); }
-    text.country-label.medium     { opacity: var(--opacity-medium); }
-    text.country-label.small      { opacity: var(--opacity-small); }
-    text.country-label.very-small { opacity: var(--opacity-vsmall); }
       `;
     svgEl.appendChild(style!);
   }
 
-  setupCountry(p: SVGPathElement, svgEl: SVGSVGElement, labelsGroup: SVGGElement, i: number) {
+  setupCountry(p: SVGPathElement, svgEl: SVGSVGElement, i: number, groups: Record<string, SVGGElement>) {
 
     p.setAttribute('fill', '#FFD8A9');
     p.setAttribute('stroke', '#ccc');
@@ -379,8 +403,8 @@ export class MapComponent implements AfterViewInit {
     p.setAttribute('stroke-linecap', 'round');
 
     const area = this.areas[i];
-    let cls = 'very-small';
-    if (area >= this.quantileArr[3]) cls = 'very-large';
+    let cls = 'vsmall';
+    if (area >= this.quantileArr[3]) cls = 'vlarge';
     else if (area >= this.quantileArr[2]) cls = 'large';
     else if (area >= this.quantileArr[1]) cls = 'medium';
     else if (area >= this.quantileArr[0]) cls = 'small';
@@ -394,10 +418,24 @@ export class MapComponent implements AfterViewInit {
     const cx = box.x + box.width / 2;
     const cy = box.y + box.height / 2;
 
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+    dot.setAttribute('cx', box.x.toString());
+    dot.setAttribute('cy', box.y.toString());
+    dot.setAttribute('r', '0.2');
+    dot.setAttribute('fill', 'red');
+
+
+
+
+
+
     if (name) {
       const title = document.createElementNS(C.SVG_NS, 'title');
-      title.textContent = name;
+      title.textContent = name + " width " + box.width + " height " + box.height + " X " + box.x + " y " + box.y;
       p.appendChild(title);
+
+      dot.appendChild(title);
 
       const text = document.createElementNS(C.SVG_NS, 'text');
       text.setAttribute('class', `country-label ${cls}`);
@@ -412,38 +450,162 @@ export class MapComponent implements AfterViewInit {
 
       text.textContent = name;
 
-      text.addEventListener('click', () => this.onCountryClicked(p));
-
-
-
-
-
-      labelsGroup.appendChild(text);
-
+      text.addEventListener('click', () => this.onCountryClicked(p, box.height));
+      groups[cls].appendChild(text);
     }
 
     p.style.cursor = 'pointer';
-    p.addEventListener('click', () => this.onCountryClicked(p));
+
+
+    this.svgEl.appendChild(dot); // or path.parentNode?.appendChild(dot)
+
+    p.addEventListener('click', () => this.onCountryClicked(p, box.height));
   }
 
 
-  onCountryClicked(p: SVGPathElement) {
-    if (!this.panZoomInstance) return;
+  onCountryClicked(p: SVGPathElement, height: number) {
 
+
+    if (!this.panZoomInstance) return;
+    const { x: currentX, y: currentY } = this.panZoomInstance.getPan();
+
+    console.log("curX", currentX, "curY", currentY)
     // Optional: load country data after zoom
     setTimeout(() => {
       const code = p.id.toUpperCase();
       // this.loadCountryMap(code);
       // this.selectedCountryCode = code;
       this.currentCountryCode = code;
+
+
+      const pathEl = this.svgEl.getElementById(code) as SVGPathElement;
+      if (!pathEl) return console.warn(`No path for ${code}`);
+
+      // 2) get its bounding box in viewBox coords
+      const box = pathEl.getBBox();
+
+      // 3) ask svg-pan-zoom for the container & viewBox sizes
+
+      const sizes = this.panZoomInstance.getSizes();
+      const contW = sizes.width;
+      const contH = sizes.height;
+      let curCountScreenHeight = contH * (box.height / 482);
+
+      let zoom = contH / curCountScreenHeight;
+
+      
+      zoom =   482 / box.height;
+
+      //container H / onSCreen height = box.height
+
+      zoom = this.curHeight / (box.height * this.initialZoomLevel )
+
+
+      if (box.width / box.height > this.curWidth / this.curHeight) {
+        zoom = (this.curWidth * 1000 / box.width) / (this.curHeight * 1000 / 482);
+      }
+
+      // 4) compute a zoom that fits the country’s height into the container
+      // zoom = 2;
+      this.panZoomInstance.zoom( zoom);
+
+      // 5) compute the pan needed to center that box
+      //    map box center → container center
+      const boxCx = box.x + box.width;
+      const boxCy = box.y + box.height;
+      let offsetX = 0; let offsetY = 0;
+
+      if (box.width / box.height <= this.curWidth / this.curHeight) {
+        offsetX = this.curWidth / 2 - box.width * this.initialZoomLevel * zoom / 2;
+
+      }
+
+      else {
+        offsetY = this.curHeight / 2 - box.height * this.initialZoomLevel * zoom / 2;
+
+      }
+
+
+      // offsetX = 0;
+      // offsetY = 0;
+
+
+      const panX = - (box.x) * zoom *this.initialZoomLevel + offsetX;
+      const panY = - (box.y) * zoom * this.initialZoomLevel + offsetY;
+
+
+      // const panX = - (box.x - offsetX) * zoom * this.initialZoomLevel;
+      // const panY = - (box.y - offSetY) * zoom * this.initialZoomLevel;
+
+
+      this.panZoomInstance.pan({ x: panX, y: panY });
+
+      console.log("current x pan after clicked", this.panZoomInstance.getPan().x)
+      // 6) now flip into “country” mode
+      this.isZoomed = true;
+
       //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
       this.cd.detectChanges();
 
-      this.countryCmp.loadCountryMap(code);
+      this.countryCmp.loadCountryMap(code, height);
 
 
     }, 400); // allow zoom animation before changing
 
   }
+
+
+  onZoomHandler(newZoom: number) {
+    const BASE_FONT = 10;       // px at zoom = 1
+    const THRESHOLDS = {
+      vlarge: 0.5,
+      large: 3.0,
+      medium: 6.0,
+      small: 9.0,
+      vsmall: 12.0
+    };        // const sw = baseStroke / newZoom;
+    // svgEl.querySelectorAll('path').forEach(p => p.setAttribute('stroke-width', `${sw}`));
+    const landGroup = this.svgEl.querySelector('#world-map')!;
+    let zoomRatio = this.initialZoomLevel / newZoom;
+    let newThick = this.worldMapLineBorderThickness * zoomRatio;
+    landGroup.setAttribute('stroke-width', `${newThick}px`);
+
+    console.log("Cur ZOom Value: ",this.panZoomInstance.getZoom());
+
+    this.svgEl.style.setProperty('--hover-stroke', `${newThick}px`);
+
+    //set country label size
+    const fontSize = (BASE_FONT * zoomRatio).toFixed(1) + 'px';
+    const borderFontSize = (BASE_FONT * zoomRatio / 4).toFixed(1) + 'px';
+    // // 3) Apply all six vars in one go
+    const s = this.svgEl.style;
+    // new country labels text opacity code
+    Object.entries(THRESHOLDS).forEach(([cls, minZoom]) => {
+      const grp = this.svgEl.querySelector<SVGGElement>(`#labels-${cls}`);
+      if (!grp) return;
+      const visible = 1 / zoomRatio >= minZoom;
+
+      // grp.style.pointerEvents = visible ? 'all' : 'none';
+      if (visible) {
+        grp.removeAttribute('display');     // back to default (visible)
+      } else {
+        grp.setAttribute('display', 'none'); // hide + block events
+      }
+
+      grp.style.opacity = visible ? '1' : '0';
+
+    });
+
+    // 3) Apply both in one go
+    s.setProperty('--label-font', fontSize);
+    s.setProperty('--label-font-cover', borderFontSize);
+
+    // svgEl.style.setProperty('--label-opacity', "1");}
+
+  }
+
+
+
+
 
 }

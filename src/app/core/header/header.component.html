@@ -28,11 +28,11 @@
     </button>
 
     <mat-select [value]="currentLang" (selectionChange)="switchLang($event.value)">
-      <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.name.toUpperCase() }}
+      <!-- <mat-option *ngFor="let lang of langs" [value]="lang.value">{{ lang.name.toUpperCase() }}
     {{ lang.value === 'en' ? '🇺🇸' : '🇪🇸' }}
 
 
-      </mat-option>
+      </mat-option> -->
     </mat-select>
 
 
