@@ -1,0 +1,16 @@
+[
+  {
+    "code": "CA",
+    "name": "California",
+    "population": 39538223,
+    "imageUrl": "assets/maps/countries/US/images/california.jpg",
+    "description": "California is known for Hollywood, Silicon Valley, and beautiful coastlines."
+  },
+  {
+    "code": "NY",
+    "name": "New York",
+    "population": 20201249,
+    "imageUrl": "assets/maps/countries/US/images/newyork.jpg",
+    "description": "New York is home to NYC, the financial capital of the world."
+  }
+]
