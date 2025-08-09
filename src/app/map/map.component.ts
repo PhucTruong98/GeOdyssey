@@ -418,12 +418,7 @@ export class MapComponent implements AfterViewInit {
     const cx = box.x + box.width / 2;
     const cy = box.y + box.height / 2;
 
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
-    dot.setAttribute('cx', box.x.toString());
-    dot.setAttribute('cy', box.y.toString());
-    dot.setAttribute('r', '0.2');
-    dot.setAttribute('fill', 'red');
 
 
 
@@ -435,7 +430,6 @@ export class MapComponent implements AfterViewInit {
       title.textContent = name + " width " + box.width + " height " + box.height + " X " + box.x + " y " + box.y;
       p.appendChild(title);
 
-      dot.appendChild(title);
 
       const text = document.createElementNS(C.SVG_NS, 'text');
       text.setAttribute('class', `country-label ${cls}`);
@@ -457,7 +451,6 @@ export class MapComponent implements AfterViewInit {
     p.style.cursor = 'pointer';
 
 
-    this.svgEl.appendChild(dot); // or path.parentNode?.appendChild(dot)
 
     p.addEventListener('click', () => this.onCountryClicked(p, box.height));
   }
@@ -605,6 +598,8 @@ export class MapComponent implements AfterViewInit {
   }
 
 
+
+  
 
 
 
