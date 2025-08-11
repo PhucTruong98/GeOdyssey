@@ -32,7 +32,7 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('worldLayer', { static: true }) worldLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild('countryLayer', { static: true }) countryLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild(CountryMapComponent, { static: false })
-  
+
   private countryCmp!: CountryMapComponent;
 
 
@@ -79,7 +79,7 @@ export class MapComponent implements AfterViewInit {
   constructor(
     private platform: PlatformService,
     private http: HttpClient,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
 
   ) { }
 
@@ -203,13 +203,15 @@ export class MapComponent implements AfterViewInit {
 
   setupZoom(svgEl: SVGSVGElement) {
 
+
+
     if (!this.platform.isBrowser) return;
 
     const originalWidth = svgEl.getAttribute('width');
     const originalHeight = svgEl.getAttribute('height');
 
     // const sizes = this.panZoomInstance.getSizes();
-    let ogRatio = 1000/482;
+    let ogRatio = 1000 / 482;
     let zoomFactor = 1;
     let targetHeight = this.curHeight;
     let targetWidth = this.curHeight * ogRatio;
@@ -218,8 +220,7 @@ export class MapComponent implements AfterViewInit {
 
 
 
-    if(this.curWidth / this.curHeight > ogRatio)
-    {
+    if (this.curWidth / this.curHeight > ogRatio) {
 
       this.isScreenWide = true;
       targetWidth = this.curWidth;
@@ -237,7 +238,13 @@ export class MapComponent implements AfterViewInit {
 
     // svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     // dynamic import inside browser guard
-    import('svg-pan-zoom').then(mod => {
+
+
+
+
+
+
+import('svg-pan-zoom').then(mod => {
       const svgPanZoom = mod.default;
       this.panZoomInstance = svgPanZoom(svgEl, {
         zoomEnabled: true,
@@ -247,11 +254,12 @@ export class MapComponent implements AfterViewInit {
         minZoom: 0.5,
         maxZoom: 1000,
         onPan: (newPan: { x: number; y: number }) => {
-          console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
+          // console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
           // e.g. update a component property
           // this.currentPan = newPan;
         }
       });
+
 
 
 
@@ -261,7 +269,7 @@ export class MapComponent implements AfterViewInit {
       // let zoomFactor = 1;
 
       const sizes = this.panZoomInstance.getSizes();
-      let ogRatio = 1000/482;
+      let ogRatio = 1000 / 482;
       let targetWidth = sizes.height * ogRatio;
       let zoomFactor = 1;
 
@@ -324,6 +332,10 @@ export class MapComponent implements AfterViewInit {
     }).catch(err => {
       console.error('Could not load svg-pan-zoom in browser:', err);
     });
+
+    
+
+    
   }
 
   injectHoverStyles(svgEl: SVGSVGElement) {
@@ -444,7 +456,7 @@ export class MapComponent implements AfterViewInit {
 
       text.textContent = name;
 
-      text.addEventListener('click', () => this.onCountryClicked(p, box.height));
+      text.addEventListener('pointerup', () => this.onCountryClicked(p, box.height));
       groups[cls].appendChild(text);
     }
 
@@ -452,7 +464,7 @@ export class MapComponent implements AfterViewInit {
 
 
 
-    p.addEventListener('click', () => this.onCountryClicked(p, box.height));
+    p.addEventListener('pointerup', () => this.onCountryClicked(p, box.height));
   }
 
 
@@ -462,7 +474,7 @@ export class MapComponent implements AfterViewInit {
     if (!this.panZoomInstance) return;
     const { x: currentX, y: currentY } = this.panZoomInstance.getPan();
 
-    console.log("curX", currentX, "curY", currentY)
+    // console.log("curX", currentX, "curY", currentY)
     // Optional: load country data after zoom
     setTimeout(() => {
       const code = p.id.toUpperCase();
@@ -486,12 +498,12 @@ export class MapComponent implements AfterViewInit {
 
       let zoom = contH / curCountScreenHeight;
 
-      
-      zoom =   482 / box.height;
+
+      zoom = 482 / box.height;
 
       //container H / onSCreen height = box.height
 
-      zoom = this.curHeight / (box.height * this.initialZoomLevel )
+      zoom = this.curHeight / (box.height * this.initialZoomLevel)
 
 
       if (box.width / box.height > this.curWidth / this.curHeight) {
@@ -500,7 +512,7 @@ export class MapComponent implements AfterViewInit {
 
       // 4) compute a zoom that fits the country’s height into the container
       // zoom = 2;
-      this.panZoomInstance.zoom( zoom);
+      this.panZoomInstance.zoom(zoom);
 
       // 5) compute the pan needed to center that box
       //    map box center → container center
@@ -523,7 +535,7 @@ export class MapComponent implements AfterViewInit {
       // offsetY = 0;
 
 
-      const panX = - (box.x) * zoom *this.initialZoomLevel + offsetX;
+      const panX = - (box.x) * zoom * this.initialZoomLevel + offsetX;
       const panY = - (box.y) * zoom * this.initialZoomLevel + offsetY;
 
 
@@ -533,7 +545,7 @@ export class MapComponent implements AfterViewInit {
 
       this.panZoomInstance.pan({ x: panX, y: panY });
 
-      console.log("current x pan after clicked", this.panZoomInstance.getPan().x)
+      // console.log("current x pan after clicked", this.panZoomInstance.getPan().x)
       // 6) now flip into “country” mode
       this.isZoomed = true;
 
@@ -563,7 +575,7 @@ export class MapComponent implements AfterViewInit {
     let newThick = this.worldMapLineBorderThickness * zoomRatio;
     landGroup.setAttribute('stroke-width', `${newThick}px`);
 
-    console.log("Cur ZOom Value: ",this.panZoomInstance.getZoom());
+    // console.log("Cur ZOom Value: ",this.panZoomInstance.getZoom());
 
     this.svgEl.style.setProperty('--hover-stroke', `${newThick}px`);
 
@@ -599,7 +611,7 @@ export class MapComponent implements AfterViewInit {
 
 
 
-  
+
 
 
 
