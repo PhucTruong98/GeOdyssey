@@ -7,6 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import gsap from 'gsap';
 import * as C from '../shared/constants';
 import { CountryMapComponent } from './country-map/country-map.component';
+import Panzoom, { PanzoomObject } from '@panzoom/panzoom';
+import * as d3 from "d3";
+
 
 
 interface Region {
@@ -32,13 +35,16 @@ export class MapComponent implements AfterViewInit {
   @ViewChild('worldLayer', { static: true }) worldLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild('countryLayer', { static: true }) countryLayer!: ElementRef<HTMLObjectElement>;
   @ViewChild(CountryMapComponent, { static: false })
-
   private countryCmp!: CountryMapComponent;
 
 
-
-
   @ViewChild('mapWrapper', { static: false }) mapWrapperRef!: ElementRef;
+
+
+  private zoom?: d3.ZoomBehavior<SVGSVGElement, unknown>;
+  private svgSel?: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+  private gSel?: d3.Selection<SVGGElement, unknown, null, undefined>;
+  private observer?: MutationObserver;
 
 
   curHeight = 0;
@@ -60,6 +66,8 @@ export class MapComponent implements AfterViewInit {
   selectedCountryCode: string | null = null;
   private panZoomInstance: any;
   private panZoomInstanceCountry: any;
+
+  private panZoomObj?: PanzoomObject;
 
   // private zoomOutHandler: (() => void) | null = null;
 
@@ -96,6 +104,7 @@ export class MapComponent implements AfterViewInit {
     const wrapperEl = this.mapWrapperRef.nativeElement as HTMLElement;
     this.curHeight = wrapperEl.offsetHeight;
     this.curWidth = wrapperEl.offsetWidth;
+
 
 
     //build lookup map for countries
@@ -207,6 +216,7 @@ export class MapComponent implements AfterViewInit {
 
     if (!this.platform.isBrowser) return;
 
+
     const originalWidth = svgEl.getAttribute('width');
     const originalHeight = svgEl.getAttribute('height');
 
@@ -230,6 +240,86 @@ export class MapComponent implements AfterViewInit {
     }
 
 
+    let viewport = this.svgEl.querySelector('#world-map') as SVGGElement;
+
+    this.svgSel = d3.select(this.svgEl);
+    this.gSel = d3.select(viewport);
+
+    //set up country text
+    const labelsG = d3.select(viewport)
+      .append('g')
+      .attr('id', 'labels')
+      .attr('pointer-events', 'none'); // labels shouldn’t steal taps
+
+    // Add a label at each country’s bbox center
+d3.select(viewport)
+  .selectAll<SVGPathElement, unknown>('path[id]')
+  .each((_d, i, nodes) => {
+    const p = nodes[i] as SVGPathElement;  // element here
+    const code = (p.id || '').toUpperCase();
+    const name = this.countryMap[code] ?? code;
+
+    const b = p.getBBox();
+    labelsG.append('text')
+      .attr('x', b.x + b.width / 2)
+      .attr('y', b.y + b.height / 2)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('class', 'country-label')
+      .text(name);
+  });
+
+
+    const vb = this.svgEl.viewBox.baseVal;
+    const contentExtent: [[number, number], [number, number]] =
+      [[vb.x, vb.y], [vb.x + vb.width, vb.y + vb.height]];
+
+    this.zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([1, 20])
+      .translateExtent(contentExtent)
+      .on('zoom', (event) => {
+        this.gSel!.attr('transform', event.transform.toString());
+        //     const { x, y, k } = event.transform;
+        // console.log('panX:', x, 'panY:', y, 'zoom scale:', k);
+
+      });
+
+    this.svgSel.call(this.zoom as any);
+
+    // Optional: fit content nicely on load
+    // this.fitToContent(this.svgEl, viewport);
+
+    // Keep your country taps working; ignore clicks that followed a drag
+    d3.select(this.worldLayer.nativeElement)
+      .selectAll<SVGPathElement, unknown>('path[id]')
+      .on('click', (event) => {
+        if ((event as any).defaultPrevented) return; // was a drag
+        const p = event.currentTarget as SVGPathElement;
+        const box = p.getBBox();
+        this.zoomToBBox(p);          // zoom to the clicked country
+
+        // If UI doesn't update, later wrap this call in NgZone.run(...)
+        // this.onCountryClicked(p, box.height);
+      });
+
+    // If you prefer pointerup (since it worked for you), use this instead:
+    // d3.select(this.worldLayer.nativeElement)
+    //   .selectAll<SVGPathElement, unknown>('.country')
+    //   .on('pointerup', (event) => {
+    //     const p = event.currentTarget as SVGPathElement;
+    //     const box = p.getBBox();
+    //     this.onCountryClicked(p, box.height);
+    //   });
+
+
+
+
+
+
+
+
+
+
     svgEl.setAttribute('width', targetWidth.toString());
     svgEl.setAttribute('height', targetHeight.toString());
     svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
@@ -244,98 +334,96 @@ export class MapComponent implements AfterViewInit {
 
 
 
-import('svg-pan-zoom').then(mod => {
-      const svgPanZoom = mod.default;
-      this.panZoomInstance = svgPanZoom(svgEl, {
-        zoomEnabled: true,
-        controlIconsEnabled: true,
-        fit: true,
-        center: true,
-        minZoom: 0.5,
-        maxZoom: 1000,
-        onPan: (newPan: { x: number; y: number }) => {
-          // console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
-          // e.g. update a component property
-          // this.currentPan = newPan;
-        }
-      });
+    // const svgPanZoom = mod.default;
+    // this.panZoomInstance = svgPanZoom(svgEl, {
+    //   zoomEnabled: true,
+    //   controlIconsEnabled: true,
+    //   fit: true,
+    //   center: true,
+    //   minZoom: 0.5,
+    //   maxZoom: 1000,
+    //   onPan: (newPan: { x: number; y: number }) => {
+    //     // console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
+    //     // e.g. update a component property
+    //     // this.currentPan = newPan;
+    //   }
+    // });
 
 
 
 
-      // const sizes = this.panZoomInstance.getSizes();
-      // let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
-      // let targetWidth = sizes.height * ogRatio;
-      // let zoomFactor = 1;
 
-      const sizes = this.panZoomInstance.getSizes();
-      let ogRatio = 1000 / 482;
-      let targetWidth = sizes.height * ogRatio;
-      let zoomFactor = 1;
+    // const sizes = this.panZoomInstance.getSizes();
+    // let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
+    // let targetWidth = sizes.height * ogRatio;
+    // let zoomFactor = 1;
 
-
-
-
-      // if (sizes.width <= targetWidth) {
-      //   zoomFactor = targetWidth / sizes.width;
-      // }
-
-      // else if (sizes.width > targetWidth) {
-      //   zoomFactor *= sizes.width / targetWidth;
-      // }
+    // const sizes = this.panZoomObj.getSizes();
+    // let ogRatio = 1000 / 482;
+    // let targetWidth = sizes.height * ogRatio;
+    // let zoomFactor = 1;
 
 
 
 
-      // this.panZoomInstance.zoom(zoomFactor);
-      this.panZoomInstance.center();
-      this.panZoomInstance.resize();
-      this.panZoomInstance.setMinZoom(zoomFactor);
-      // this.initialZoomLevel = zoomFactor;
-      this.onZoomHandler(zoomFactor);
+    // if (sizes.width <= targetWidth) {
+    //   zoomFactor = targetWidth / sizes.width;
+    // }
 
-
-      //set scrolling boundary
-      this.panZoomInstance.setBeforePan((oldPan: any, newPan: { x: number; y: number; }) => {
-        const sizes = this.panZoomInstance.getSizes();
-        // real content size (in px) after current zoom
-        const realW = sizes.viewBox.width * sizes.realZoom;
-        const realH = sizes.viewBox.height * sizes.realZoom;
-
-        // container size in px
-        const contW = this.curWidth;
-        const contH = this.curHeight;
-
-        // compute the min/max pan.x so the content always overlaps the container
-        const minX = Math.min(0, contW - realW);
-        const maxX = 0;
-        // likewise for pan.y
-        const minY = Math.min(0, contH - realH);
-        const maxY = 0;
-
-        // clamp
-        return {
-          x: Math.max(minX, Math.min(newPan.x, maxX)),
-          y: Math.max(minY, Math.min(newPan.y, maxY))
-        };
-      });
-
-      //set onZoom listener
-      this.panZoomInstance.setOnZoom((newZoom: number) => {
-
-        this.onZoomHandler(newZoom);
-      });
+    // else if (sizes.width > targetWidth) {
+    //   zoomFactor *= sizes.width / targetWidth;
+    // }
 
 
 
 
-    }).catch(err => {
-      console.error('Could not load svg-pan-zoom in browser:', err);
-    });
+    // this.panZoomInstance.zoom(zoomFactor);
+    // this.panZoomInstance.center();
+    // this.panZoomInstance.resize();
+    // this.panZoomInstance.setMinZoom(zoomFactor);
+    // // this.initialZoomLevel = zoomFactor;
+    // this.onZoomHandler(zoomFactor);
 
-    
 
-    
+    //set scrolling boundary
+    // this.panZoomInstance.setBeforePan((oldPan: any, newPan: { x: number; y: number; }) => {
+    //   const sizes = this.panZoomInstance.getSizes();
+    //   // real content size (in px) after current zoom
+    //   const realW = sizes.viewBox.width * sizes.realZoom;
+    //   const realH = sizes.viewBox.height * sizes.realZoom;
+
+    //   // container size in px
+    //   const contW = this.curWidth;
+    //   const contH = this.curHeight;
+
+    //   // compute the min/max pan.x so the content always overlaps the container
+    //   const minX = Math.min(0, contW - realW);
+    //   const maxX = 0;
+    //   // likewise for pan.y
+    //   const minY = Math.min(0, contH - realH);
+    //   const maxY = 0;
+
+    //   // clamp
+    //   return {
+    //     x: Math.max(minX, Math.min(newPan.x, maxX)),
+    //     y: Math.max(minY, Math.min(newPan.y, maxY))
+    //   };
+    // });
+
+    // //set onZoom listener
+    // this.panZoomInstance.setOnZoom((newZoom: number) => {
+
+    //   this.onZoomHandler(newZoom);
+    // });
+
+
+
+
+
+
+
+
+
   }
 
   injectHoverStyles(svgEl: SVGSVGElement) {
@@ -457,22 +545,22 @@ import('svg-pan-zoom').then(mod => {
       text.textContent = name;
 
       text.addEventListener('pointerup', () => this.onCountryClicked(p, box.height));
-      groups[cls].appendChild(text);
+      // groups[cls].appendChild(text);
     }
 
     p.style.cursor = 'pointer';
 
 
 
-    p.addEventListener('pointerup', () => this.onCountryClicked(p, box.height));
+    // p.addEventListener('pointerup', () => this.onCountryClicked(p, box.height));
   }
 
 
   onCountryClicked(p: SVGPathElement, height: number) {
 
 
-    if (!this.panZoomInstance) return;
-    const { x: currentX, y: currentY } = this.panZoomInstance.getPan();
+    // if (!this.panZoomInstance) return;
+    // const { x: currentX, y: currentY } = this.panZoomInstance.getPan();
 
     // console.log("curX", currentX, "curY", currentY)
     // Optional: load country data after zoom
@@ -491,28 +579,28 @@ import('svg-pan-zoom').then(mod => {
 
       // 3) ask svg-pan-zoom for the container & viewBox sizes
 
-      const sizes = this.panZoomInstance.getSizes();
-      const contW = sizes.width;
-      const contH = sizes.height;
-      let curCountScreenHeight = contH * (box.height / 482);
+      // const sizes = this.panZoomInstance.getSizes();
+      // const contW = sizes.width;
+      // const contH = sizes.height;
+      // let curCountScreenHeight = contH * (box.height / 482);
 
-      let zoom = contH / curCountScreenHeight;
+      // let zoom = contH / curCountScreenHeight;
 
 
-      zoom = 482 / box.height;
+      // zoom = 482 / box.height;
 
       //container H / onSCreen height = box.height
 
-      zoom = this.curHeight / (box.height * this.initialZoomLevel)
+      // zoom = this.curHeight / (box.height * this.initialZoomLevel)
 
 
-      if (box.width / box.height > this.curWidth / this.curHeight) {
-        zoom = (this.curWidth * 1000 / box.width) / (this.curHeight * 1000 / 482);
-      }
+      // if (box.width / box.height > this.curWidth / this.curHeight) {
+      //   zoom = (this.curWidth * 1000 / box.width) / (this.curHeight * 1000 / 482);
+      // }
 
       // 4) compute a zoom that fits the country’s height into the container
       // zoom = 2;
-      this.panZoomInstance.zoom(zoom);
+      // this.panZoomInstance.zoom(zoom);
 
       // 5) compute the pan needed to center that box
       //    map box center → container center
@@ -520,30 +608,30 @@ import('svg-pan-zoom').then(mod => {
       const boxCy = box.y + box.height;
       let offsetX = 0; let offsetY = 0;
 
-      if (box.width / box.height <= this.curWidth / this.curHeight) {
-        offsetX = this.curWidth / 2 - box.width * this.initialZoomLevel * zoom / 2;
+      // if (box.width / box.height <= this.curWidth / this.curHeight) {
+      //   offsetX = this.curWidth / 2 - box.width * this.initialZoomLevel * zoom / 2;
 
-      }
+      // }
 
-      else {
-        offsetY = this.curHeight / 2 - box.height * this.initialZoomLevel * zoom / 2;
+      // else {
+      //   offsetY = this.curHeight / 2 - box.height * this.initialZoomLevel * zoom / 2;
 
-      }
+      // }
 
 
       // offsetX = 0;
       // offsetY = 0;
 
 
-      const panX = - (box.x) * zoom * this.initialZoomLevel + offsetX;
-      const panY = - (box.y) * zoom * this.initialZoomLevel + offsetY;
+      // const panX = - (box.x) * zoom * this.initialZoomLevel + offsetX;
+      // const panY = - (box.y) * zoom * this.initialZoomLevel + offsetY;
 
 
       // const panX = - (box.x - offsetX) * zoom * this.initialZoomLevel;
       // const panY = - (box.y - offSetY) * zoom * this.initialZoomLevel;
 
 
-      this.panZoomInstance.pan({ x: panX, y: panY });
+      // this.panZoomInstance.pan({ x: panX, y: panY });
 
       // console.log("current x pan after clicked", this.panZoomInstance.getPan().x)
       // 6) now flip into “country” mode
@@ -611,7 +699,115 @@ import('svg-pan-zoom').then(mod => {
 
 
 
+  private fitToContent(svg: SVGSVGElement, viewport: SVGGElement) {
+    const vb = svg.viewBox.baseVal;
+    const w = vb.width || svg.clientWidth;
+    const h = vb.height || svg.clientHeight;
 
+    const b = viewport.getBBox();
+    const scale = Math.min(w / b.width, h / b.height);
+    // const tx = w / 2 - scale * (b.x + b.width / 2);
+    // const ty = h / 2 - scale * (b.y + b.height / 2);
+    const tx = - scale * (b.x);
+    const ty = - scale * (b.y);
+
+
+    this.svgSel!.call(
+      (this.zoom!.transform as any),
+      d3.zoomIdentity.translate(tx, ty).scale(scale)
+    );
+  }
+
+
+  // helpers you can keep in your component
+  private zoomToBBox(p: SVGPathElement) {
+    let svg = p.ownerSVGElement!;
+    const vb = svg.viewBox.baseVal;
+    const W = vb.width || svg.clientWidth;
+    const H = vb.height || svg.clientHeight;
+
+    let box = p.getBBox();
+
+    let padding = 0;
+    // add padding around the country
+    const bw = box.width + padding * 2;
+    const bh = box.height + padding * 2;
+
+    let hFit = false;
+    // choose a scale that fits the bbox into the viewport
+    if (this.curWidth / bw >= this.curHeight / bh) {
+      hFit = true;
+    }
+    let scale = Math.min(this.curWidth / bw, this.curHeight / bh) / this.initialZoomLevel;
+    // const scale = Math.min(20, 0.95 * Math.min(W / bw, H / bh)); // clamp to your max
+    // const tx = W / 2 - scale * (box.x + box.width  / 2);
+    // const ty = H / 2 - scale * (box.y + box.height / 2);
+
+    let offsetX = 0;
+    let offsetY = 0;
+    if (hFit) {
+      offsetX = ((this.curWidth / this.curHeight) - (bw / bh)) / 2 * bh * scale
+    }
+    else {
+      offsetY = ((this.curHeight / this.curWidth) - (bh / bw)) / 2 * bw * scale
+
+    }
+    // let offsetX = hFit? (this.curWidth - bw * scale * this.initialZoomLevel ) / 2 : 0;
+    // let offsetY = hFit? 0 : (this.curHeight - bh * scale * this.initialZoomLevel) / 2 ;
+
+    // offsetX = 0;
+    // offsetY = 0;
+
+    const tx = - scale * (box.x) + offsetX;
+    const ty = - scale * (box.y) + offsetY;
+
+    // smooth zoom
+    this.svgSel!
+      .transition()
+      .duration(750)
+      .call(
+        this.zoom!.transform as any,
+        d3.zoomIdentity.translate(tx, ty).scale(scale)
+      ).on('end', () => {
+        // This runs only after animation completes
+        this.onCountryClicked(p, box.height);
+      });;
+  }
+
+  private zoomToElement(p: SVGPathElement) {
+    // const svg = p.ownerSVGElement!;
+    this.zoomToBBox(p);
+  }
+
+  // optional: zoom back out to the whole world
+  private zoomToWorld() {
+    const svg = this.svgSel!.node()!;
+    const g = this.gSel!.node()!;
+    const b = g.getBBox();
+    const vb = svg.viewBox.baseVal;
+    const W = vb.width || svg.clientWidth;
+    const H = vb.height || svg.clientHeight;
+    const scale = 0.95 * Math.min(W / b.width, H / b.height);
+    const tx = W / 2 - scale * (b.x + b.width / 2);
+    const ty = H / 2 - scale * (b.y + b.height / 2);
+
+    this.svgSel!
+      .transition()
+      .duration(750)
+      .call(
+        this.zoom!.transform as any,
+        d3.zoomIdentity.translate(tx, ty).scale(scale)
+      );
+  }
+
+
+
+
+  ngOnDestroy() {
+    this.observer?.disconnect();
+    if (this.svgSel) this.svgSel.on('.zoom', null); // unbind d3-zoom
+    d3.select(this.worldLayer.nativeElement).selectAll('.path[id]').on('click', null);
+  }
 
 
 
