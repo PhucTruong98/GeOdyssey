@@ -20,6 +20,13 @@ interface Region {
   description: string;
 }
 
+
+
+type LabelNode = {
+  id: string; name: string; x: number; y: number; w: number; h: number; area: number;
+  minK: number; el: HTMLDivElement;
+};
+
 interface Country {
   code: string;
   name: string;
@@ -40,12 +47,20 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild('mapWrapper', { static: false }) mapWrapperRef!: ElementRef;
 
+    @ViewChild('labelOverlay', { static: true }) labelOverlay!: ElementRef<HTMLDivElement>;
+
 
   private zoom?: d3.ZoomBehavior<SVGSVGElement, unknown>;
   private svgSel?: d3.Selection<SVGSVGElement, unknown, null, undefined>;
   private gSel?: d3.Selection<SVGGElement, unknown, null, undefined>;
   private observer?: MutationObserver;
 
+private labelNodes: LabelNode[] = [];
+private lastT = d3.zoomIdentity;
+private rafPending = false;
+
+
+  currentK = 1;
 
   curHeight = 0;
   curWidth = 0;
@@ -170,41 +185,11 @@ export class MapComponent implements AfterViewInit {
 
 
 
-    // 1) Create a group for each size class
-    const sizeClasses = ['vlarge', 'large', 'medium', 'small', 'vsmall'] as const;
-    const groups: Record<string, SVGGElement> = {};
-    sizeClasses.forEach(cls => {
-      const g = document.createElementNS(C.SVG_NS, 'g');
-      g.setAttribute('id', `labels-${cls}`);
-      // default to no pointer-events; we'll enable on zoom
-      // g.setAttribute('pointer-events', 'none');
-      svgEl.appendChild(g);
-      groups[cls] = g;
-    });
-
-
-
-
-
-    //add names
-    const paths = Array.from(svgEl.querySelectorAll<SVGPathElement>('path[id]'));
-    // 1. Compute raw areas
-    this.areas = paths.map(p => {
-      const b = p.getBBox();
-      return b.width * b.height;
-    });
-    const sorted = [...this.areas].sort((a, b) => a - b);
-    // 2. Determine the five quantile boundaries
-    const q = (f: number) => sorted[Math.floor(sorted.length * f)];
-    this.quantileArr = [0.2, 0.4, 0.6, 0.9].map(q);
-
-
-
     this.setupZoom(svgEl);
     this.injectHoverStyles(svgEl);
 
     const countries = svgEl.querySelectorAll<SVGPathElement>('path[id]');
-    countries.forEach((path, i) => this.setupCountry(path as SVGPathElement, svgEl, i, groups));
+    countries.forEach((path, i) => this.setupCountry(path as SVGPathElement, svgEl, i));
 
 
   }
@@ -217,12 +202,13 @@ export class MapComponent implements AfterViewInit {
     if (!this.platform.isBrowser) return;
 
 
+
+
     const originalWidth = svgEl.getAttribute('width');
     const originalHeight = svgEl.getAttribute('height');
 
     // const sizes = this.panZoomInstance.getSizes();
     let ogRatio = 1000 / 482;
-    let zoomFactor = 1;
     let targetHeight = this.curHeight;
     let targetWidth = this.curHeight * ogRatio;
     this.initialZoomLevel = this.curHeight / 482;
@@ -245,31 +231,12 @@ export class MapComponent implements AfterViewInit {
     this.svgSel = d3.select(this.svgEl);
     this.gSel = d3.select(viewport);
 
-    //set up country text
-    const labelsG = d3.select(viewport)
-      .append('g')
-      .attr('id', 'labels')
-      .attr('pointer-events', 'none'); // labels shouldn’t steal taps
-
-    // Add a label at each country’s bbox center
-d3.select(viewport)
-  .selectAll<SVGPathElement, unknown>('path[id]')
-  .each((_d, i, nodes) => {
-    const p = nodes[i] as SVGPathElement;  // element here
-    const code = (p.id || '').toUpperCase();
-    const name = this.countryMap[code] ?? code;
-
-    const b = p.getBBox();
-    labelsG.append('text')
-      .attr('x', b.x + b.width / 2)
-      .attr('y', b.y + b.height / 2)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .attr('class', 'country-label')
-      .text(name);
-  });
+    this.buildOverlayLabels(this.svgEl, viewport)
 
 
+
+
+  //set up zoom
     const vb = this.svgEl.viewBox.baseVal;
     const contentExtent: [[number, number], [number, number]] =
       [[vb.x, vb.y], [vb.x + vb.width, vb.y + vb.height]];
@@ -281,6 +248,18 @@ d3.select(viewport)
         this.gSel!.attr('transform', event.transform.toString());
         //     const { x, y, k } = event.transform;
         // console.log('panX:', x, 'panY:', y, 'zoom scale:', k);
+            // labels.attr('display', (d: any) => (event.transform.k >= d.minK ? null : 'none'));
+
+            // schedule one overlay update per frame
+  this.lastT = event.transform;
+  if (!this.rafPending) {
+    this.rafPending = true;
+    requestAnimationFrame(() => {
+      this.rafPending = false;
+      this.updateOverlay(this.lastT);
+    });
+  }
+
 
       });
 
@@ -302,126 +281,11 @@ d3.select(viewport)
         // this.onCountryClicked(p, box.height);
       });
 
-    // If you prefer pointerup (since it worked for you), use this instead:
-    // d3.select(this.worldLayer.nativeElement)
-    //   .selectAll<SVGPathElement, unknown>('.country')
-    //   .on('pointerup', (event) => {
-    //     const p = event.currentTarget as SVGPathElement;
-    //     const box = p.getBBox();
-    //     this.onCountryClicked(p, box.height);
-    //   });
-
-
-
-
-
-
-
-
 
 
     svgEl.setAttribute('width', targetWidth.toString());
     svgEl.setAttribute('height', targetHeight.toString());
     svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-
-
-
-    // svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-    // dynamic import inside browser guard
-
-
-
-
-
-
-    // const svgPanZoom = mod.default;
-    // this.panZoomInstance = svgPanZoom(svgEl, {
-    //   zoomEnabled: true,
-    //   controlIconsEnabled: true,
-    //   fit: true,
-    //   center: true,
-    //   minZoom: 0.5,
-    //   maxZoom: 1000,
-    //   onPan: (newPan: { x: number; y: number }) => {
-    //     // console.log(`Pan changed → x: ${newPan.x}, y: ${newPan.y}`);
-    //     // e.g. update a component property
-    //     // this.currentPan = newPan;
-    //   }
-    // });
-
-
-
-
-
-    // const sizes = this.panZoomInstance.getSizes();
-    // let ogRatio = sizes.viewBox.width / sizes.viewBox.height;
-    // let targetWidth = sizes.height * ogRatio;
-    // let zoomFactor = 1;
-
-    // const sizes = this.panZoomObj.getSizes();
-    // let ogRatio = 1000 / 482;
-    // let targetWidth = sizes.height * ogRatio;
-    // let zoomFactor = 1;
-
-
-
-
-    // if (sizes.width <= targetWidth) {
-    //   zoomFactor = targetWidth / sizes.width;
-    // }
-
-    // else if (sizes.width > targetWidth) {
-    //   zoomFactor *= sizes.width / targetWidth;
-    // }
-
-
-
-
-    // this.panZoomInstance.zoom(zoomFactor);
-    // this.panZoomInstance.center();
-    // this.panZoomInstance.resize();
-    // this.panZoomInstance.setMinZoom(zoomFactor);
-    // // this.initialZoomLevel = zoomFactor;
-    // this.onZoomHandler(zoomFactor);
-
-
-    //set scrolling boundary
-    // this.panZoomInstance.setBeforePan((oldPan: any, newPan: { x: number; y: number; }) => {
-    //   const sizes = this.panZoomInstance.getSizes();
-    //   // real content size (in px) after current zoom
-    //   const realW = sizes.viewBox.width * sizes.realZoom;
-    //   const realH = sizes.viewBox.height * sizes.realZoom;
-
-    //   // container size in px
-    //   const contW = this.curWidth;
-    //   const contH = this.curHeight;
-
-    //   // compute the min/max pan.x so the content always overlaps the container
-    //   const minX = Math.min(0, contW - realW);
-    //   const maxX = 0;
-    //   // likewise for pan.y
-    //   const minY = Math.min(0, contH - realH);
-    //   const maxY = 0;
-
-    //   // clamp
-    //   return {
-    //     x: Math.max(minX, Math.min(newPan.x, maxX)),
-    //     y: Math.max(minY, Math.min(newPan.y, maxY))
-    //   };
-    // });
-
-    // //set onZoom listener
-    // this.panZoomInstance.setOnZoom((newZoom: number) => {
-
-    //   this.onZoomHandler(newZoom);
-    // });
-
-
-
-
-
-
-
 
 
   }
@@ -491,7 +355,7 @@ d3.select(viewport)
     svgEl.appendChild(style!);
   }
 
-  setupCountry(p: SVGPathElement, svgEl: SVGSVGElement, i: number, groups: Record<string, SVGGElement>) {
+  setupCountry(p: SVGPathElement, svgEl: SVGSVGElement, i: number) {
 
     p.setAttribute('fill', '#FFD8A9');
     p.setAttribute('stroke', '#ccc');
@@ -577,64 +441,6 @@ d3.select(viewport)
       // 2) get its bounding box in viewBox coords
       const box = pathEl.getBBox();
 
-      // 3) ask svg-pan-zoom for the container & viewBox sizes
-
-      // const sizes = this.panZoomInstance.getSizes();
-      // const contW = sizes.width;
-      // const contH = sizes.height;
-      // let curCountScreenHeight = contH * (box.height / 482);
-
-      // let zoom = contH / curCountScreenHeight;
-
-
-      // zoom = 482 / box.height;
-
-      //container H / onSCreen height = box.height
-
-      // zoom = this.curHeight / (box.height * this.initialZoomLevel)
-
-
-      // if (box.width / box.height > this.curWidth / this.curHeight) {
-      //   zoom = (this.curWidth * 1000 / box.width) / (this.curHeight * 1000 / 482);
-      // }
-
-      // 4) compute a zoom that fits the country’s height into the container
-      // zoom = 2;
-      // this.panZoomInstance.zoom(zoom);
-
-      // 5) compute the pan needed to center that box
-      //    map box center → container center
-      const boxCx = box.x + box.width;
-      const boxCy = box.y + box.height;
-      let offsetX = 0; let offsetY = 0;
-
-      // if (box.width / box.height <= this.curWidth / this.curHeight) {
-      //   offsetX = this.curWidth / 2 - box.width * this.initialZoomLevel * zoom / 2;
-
-      // }
-
-      // else {
-      //   offsetY = this.curHeight / 2 - box.height * this.initialZoomLevel * zoom / 2;
-
-      // }
-
-
-      // offsetX = 0;
-      // offsetY = 0;
-
-
-      // const panX = - (box.x) * zoom * this.initialZoomLevel + offsetX;
-      // const panY = - (box.y) * zoom * this.initialZoomLevel + offsetY;
-
-
-      // const panX = - (box.x - offsetX) * zoom * this.initialZoomLevel;
-      // const panY = - (box.y - offSetY) * zoom * this.initialZoomLevel;
-
-
-      // this.panZoomInstance.pan({ x: panX, y: panY });
-
-      // console.log("current x pan after clicked", this.panZoomInstance.getPan().x)
-      // 6) now flip into “country” mode
       this.isZoomed = true;
 
       //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
@@ -699,25 +505,6 @@ d3.select(viewport)
 
 
 
-  private fitToContent(svg: SVGSVGElement, viewport: SVGGElement) {
-    const vb = svg.viewBox.baseVal;
-    const w = vb.width || svg.clientWidth;
-    const h = vb.height || svg.clientHeight;
-
-    const b = viewport.getBBox();
-    const scale = Math.min(w / b.width, h / b.height);
-    // const tx = w / 2 - scale * (b.x + b.width / 2);
-    // const ty = h / 2 - scale * (b.y + b.height / 2);
-    const tx = - scale * (b.x);
-    const ty = - scale * (b.y);
-
-
-    this.svgSel!.call(
-      (this.zoom!.transform as any),
-      d3.zoomIdentity.translate(tx, ty).scale(scale)
-    );
-  }
-
 
   // helpers you can keep in your component
   private zoomToBBox(p: SVGPathElement) {
@@ -774,10 +561,7 @@ d3.select(viewport)
       });;
   }
 
-  private zoomToElement(p: SVGPathElement) {
-    // const svg = p.ownerSVGElement!;
-    this.zoomToBBox(p);
-  }
+
 
   // optional: zoom back out to the whole world
   private zoomToWorld() {
@@ -802,6 +586,82 @@ d3.select(viewport)
 
 
 
+private buildOverlayLabels(svg: SVGSVGElement, viewport: SVGGElement) {
+  const overlay = this.labelOverlay.nativeElement;
+
+  const paths = d3.select(viewport).selectAll<SVGPathElement, unknown>('path[id]').nodes();
+  const tmp: Omit<LabelNode, 'minK'|'el'>[] = paths.map(p => {
+    const code = (p.id || '').toUpperCase();
+    const b = (p as SVGPathElement).getBBox();
+    return {
+      id: code,
+      name: this.countryMap[code] ?? code,
+      x: b.x + b.width/2,
+      y: b.y + b.height/2,
+      w: b.width,
+      h: b.height,
+      area: b.width * b.height,
+    };
+  });
+// LOD via quantiles → min zoom k
+  const areas = tmp.map(d => d.area);
+  const minKScale = d3.scaleQuantile<number>()
+    .domain(areas)
+    .range([18, 15 ,12,9,7, 5, 3, 1]); // tune
+
+  // Create DOM nodes once
+  this.labelNodes = tmp.map(d => {
+    const el = document.createElement('div');
+    el.className = 'country-label';
+    el.textContent = d.name;
+    el.style.position = 'absolute';
+    el.style.transform = 'translate(-9999px,-9999px)'; // offscreen initially
+    el.style.pointerEvents = 'none';
+    overlay.appendChild(el);
+    return { ...d, minK: minKScale(d.area), el };
+  });
+  }
+
+  //   private fitWorld(svg: SVGSVGElement) {
+  //   const g = this.gSel!.node()!;
+  //   const b = g.getBBox();
+  //   const W = svg.viewBox.baseVal.width  || svg.clientWidth;
+  //   const H = svg.viewBox.baseVal.height || svg.clientHeight;
+  //   const scale = 0.95 * Math.min(W / b.width, H / b.height);
+  //   const tx = W / 2 - scale * (b.x + b.width / 2);
+  //   const ty = H / 2 - scale * (b.y + b.height / 2);
+
+  //   this.svgSel!
+  //     .transition().duration(0)
+  //     .call(this.zoom!.transform as any, d3.zoomIdentity.translate(tx, ty).scale(scale));
+  // }
+
+private updateOverlay(t: d3.ZoomTransform) {
+  const svg = this.svgSel!.node()!;
+  const W = this.curWidth, H = this.curHeight;
+
+  // Compute the visible bounds in SVG coordinates (for culling)
+  // const x0 = t.invertX(0),   y0 = t.invertY(0);
+  // const x1 = t.invertX(W),   y1 = t.invertY(H);
+  const x0 = 0,   y0 = 0;
+  const x1 = this.curWidth / this.initialZoomLevel,   y1 = this.curHeight / this.initialZoomLevel;
+  for (const d of this.labelNodes) {
+    // LOD: only show when zoomed in enough
+    if (t.k < d.minK) { d.el.style.display = 'none'; continue; }
+
+    // Frustum culling: skip labels offscreen (in SVG coords)
+    if (d.x < x0 || d.x > x1 || d.y < y0 || d.y > y1) {
+      d.el.style.display = 'none'; continue;
+    }
+
+    // Project to screen pixels and show
+    const sx = t.applyX(d.x) * this.initialZoomLevel;
+    const sy = t.applyY(d.y) * this.initialZoomLevel;
+    d.el.style.display = 'block';
+    // constant-size labels (no counter-scale needed for HTML overlay)
+    d.el.style.transform = `translate(${sx}px, ${sy}px) translate(-50%,-50%)`;
+  }
+}
 
   ngOnDestroy() {
     this.observer?.disconnect();
