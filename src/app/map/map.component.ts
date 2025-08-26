@@ -238,8 +238,14 @@ private rafPending = false;
 
   //set up zoom
     const vb = this.svgEl.viewBox.baseVal;
+    let offX = vb.width * Math.max(1 - ((this.curWidth / this.curHeight) / (1000 / 482)), 0);
+    let offY = vb.height * Math.max(1 - ((this.curHeight / this.curWidth) / (482 / 1000)), 0);
+
+
     const contentExtent: [[number, number], [number, number]] =
-      [[vb.x, vb.y], [vb.x + vb.width, vb.y + vb.height]];
+      [[0, 0], [vb.width + offX, vb.height + offY]];
+
+
 
     this.zoom = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([1, 20])
