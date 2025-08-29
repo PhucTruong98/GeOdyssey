@@ -1,13 +1,10 @@
-<div
->
-<div
-    #countryLayer
-    *ngIf="countrySvg != '' "
-    class="map-layer country" 
-    [class.active]="true"
-    [innerHTML]="countrySvg | safeHtml"
-  >
-</div>
-   </div>
-  
+<div #countryMapWrapper class="map-wrapper">
 
+
+  <div #countryLayer *ngIf="countrySvg != '' " class="map-layer country" [class.active]="true"
+    [innerHTML]="countrySvg | safeHtml">
+  </div>
+
+  <!-- Overlay that floats above the SVG -->
+  <div #labelOverlay class="label-overlay"></div>
+</div>

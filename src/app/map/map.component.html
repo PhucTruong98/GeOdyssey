@@ -1,33 +1,23 @@
-
-
 <div class="main-map">
 
-<div #mapWrapper class="map-wrapper">
+  <div #mapWrapper class="map-wrapper">
 
-  <!-- World layer -->
-  <div
-    #worldLayer
-    id="svgMap"
-    class="map-layer"
-    [class.zoomed]="isZoomed"
-    [innerHTML]="worldSvg | safeHtml"
-    aria-label="World map"
-  >
-</div>
+    <!-- World layer -->
+    <div #worldLayer id="svgMap" class="map-layer" [class.zoomed]="isZoomed" [innerHTML]="worldSvg | safeHtml"
+      aria-label="World map">
+    </div>
 
-<!-- Overlay that floats above the SVG -->
-  <div #labelOverlay class="label-overlay"></div>
+    <!-- Overlay that floats above the SVG -->
+    <div #labelOverlay class="label-overlay"></div>
 
 
-   <app-country-map 
-    (isZoomed)="isZoomed = $event"
-    >
+    <app-country-map (isZoomed)="isZoomed = $event">
 
-  >
-</app-country-map>
-  
+      >
+    </app-country-map>
 
-</div>
+
+  </div>
 
 
 </div>

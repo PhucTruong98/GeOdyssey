@@ -47,7 +47,7 @@ export class MapComponent implements AfterViewInit {
 
   @ViewChild('mapWrapper', { static: false }) mapWrapperRef!: ElementRef;
 
-    @ViewChild('labelOverlay', { static: true }) labelOverlay!: ElementRef<HTMLDivElement>;
+  @ViewChild('labelOverlay', { static: true }) labelOverlay!: ElementRef<HTMLDivElement>;
 
 
   private zoom?: d3.ZoomBehavior<SVGSVGElement, unknown>;
@@ -79,10 +79,7 @@ private rafPending = false;
   selectedRegion: Region | null = null;
 
   selectedCountryCode: string | null = null;
-  private panZoomInstance: any;
-  private panZoomInstanceCountry: any;
 
-  private panZoomObj?: PanzoomObject;
 
   // private zoomOutHandler: (() => void) | null = null;
 
@@ -202,11 +199,6 @@ private rafPending = false;
     if (!this.platform.isBrowser) return;
 
 
-
-
-    const originalWidth = svgEl.getAttribute('width');
-    const originalHeight = svgEl.getAttribute('height');
-
     // const sizes = this.panZoomInstance.getSizes();
     let ogRatio = 1000 / 482;
     let targetHeight = this.curHeight;
@@ -262,6 +254,7 @@ private rafPending = false;
     this.rafPending = true;
     requestAnimationFrame(() => {
       this.rafPending = false;
+      this.onZoomHandler(this.lastT.k)
       this.updateOverlay(this.lastT);
     });
   }
@@ -452,7 +445,7 @@ private rafPending = false;
       //add this line because there is issue with isZoomed boolean updated in child component, do detectChange to let parent know about the change in isZoomed
       this.cd.detectChanges();
 
-      this.countryCmp.loadCountryMap(code, height);
+      this.countryCmp.loadCountryMap(code);
 
 
     }, 400); // allow zoom animation before changing
