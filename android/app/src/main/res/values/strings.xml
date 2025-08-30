@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">geodyssey</string>
+    <string name="title_activity_main">geodyssey</string>
+    <string name="package_name">com.geo.geodyssey</string>
+    <string name="custom_url_scheme">com.geo.geodyssey</string>
+</resources>

@@ -257,7 +257,7 @@ export class CountryMapComponent implements AfterViewInit {
     const areas = tmp.map(d => d.area);
     const minKScale = d3.scaleQuantile<number>()
       .domain(areas)
-      .range([10, 7, 4, 2, 1]); // tune
+      .range([4, 2, 1]); // tune
 
 
 
@@ -268,7 +268,7 @@ export class CountryMapComponent implements AfterViewInit {
       el.className = 'country-label';
       el.textContent = d.name;
       el.style.position = 'absolute';
-      // el.style.transform = 'translate(-9999px,-9999px)'; // offscreen initially
+      el.style.transform = 'translate(-9999px,-9999px)'; // offscreen initially
 
 
       el.style.pointerEvents = 'none';

@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "node scripts/cap-fix-index.js",
+    "cap:copy": "npx cap copy",
+
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:geodyssey": "node dist/geodyssey/server/server.mjs"
@@ -23,6 +26,10 @@
     "@angular/platform-server": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.15",
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
     "@ngbracket/ngx-layout": "^19.0.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
